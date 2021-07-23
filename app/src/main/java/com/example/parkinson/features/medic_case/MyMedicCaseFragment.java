@@ -2,12 +2,16 @@ package com.example.parkinson.features.medic_case;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ImageDecoder;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +19,9 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,6 +35,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
 import com.example.parkinson.features.medicine.MyMedicinesFragmentDirections;
@@ -38,11 +49,22 @@ import com.example.parkinson.model.general_models.Medicine;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.example.parkinson.features.main.MainActivity.files;
 
 @AndroidEntryPoint
 public class MyMedicCaseFragment extends Fragment {
@@ -63,6 +85,10 @@ public class MyMedicCaseFragment extends Fragment {
     Uri fileUri;
     Bitmap bitmap1, bitmap2;
 
+    //Dialogs
+    private AlertDialog alertDialog;
+
+
     public MyMedicCaseFragment(){
         super(R.layout.fragment_medic_case);
     }
@@ -77,20 +103,36 @@ public class MyMedicCaseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         medicCaseViewModel = new ViewModelProvider(this).get(MedicCaseViewModel.class);
 
         medicCaseViewModel.initMedicineData();
         initViews(view);
-        initUi(view);
+        //initUi(view);
         initObservers();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new MyMedicCaseMainAdapter(files);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setListener(new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
+            @Override
+            public void onFileClicked(int position, View view) {
+
+                loadImageDialog(files.get(position));
+            }
+        });
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(getActivity(), "Im here", Toast.LENGTH_SHORT).show();
                 buildSheetDialog();
             }
         });
+
+        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v->{ getActivity().onBackPressed();
+       });
 
     }
 
@@ -100,22 +142,22 @@ public class MyMedicCaseFragment extends Fragment {
 
     }
 
-    private void initUi(View view) {
-        adapter = new MyMedicCaseMainAdapter(getMainAdapterListener());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
-
-        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v->{
-            getActivity().onBackPressed();
-        });
-
-//        CardView addMedicine = view.findViewById(R.id.myMedicinesFragAddBtn);
-//        addMedicine.setOnClickListener(v -> {
-//            NavDirections action = MyMedicinesFragmentDirections.actionMedicineFragmentToMedicineCategoryFragment();
-//            Navigation.findNavController(view).navigate(action);
+//    private void initUi(View view) {
+//        adapter = new MyMedicCaseMainAdapter(getMainAdapterListener());
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setAdapter(adapter);
+//
+//        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v->{
+//            getActivity().onBackPressed();
 //        });
-    }
+//
+////        CardView addMedicine = view.findViewById(R.id.myMedicinesFragAddBtn);
+////        addMedicine.setOnClickListener(v -> {
+////            NavDirections action = MyMedicinesFragmentDirections.actionMedicineFragmentToMedicineCategoryFragment();
+////            Navigation.findNavController(view).navigate(action);
+////        });
+//    }
 
     private void initObservers() {
         medicCaseViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading-> {
@@ -128,15 +170,15 @@ public class MyMedicCaseFragment extends Fragment {
     }
 
 //
-    private MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener getMainAdapterListener(){
-        return new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
-            @Override
-            public void onMedicineClick(Medicine medicine) {
-                NavDirections action = MyMedicinesFragmentDirections.actionMyMedicinesFragmentToSingleMedicineFrag(medicine);
-                Navigation.findNavController(getView()).navigate(action);
-            }
-        };
-    }
+//    private MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener getMainAdapterListener(){
+//        return new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
+//            @Override
+//            public void onMedicineClick(Medicine medicine) {
+//                NavDirections action = MyMedicinesFragmentDirections.actionMyMedicinesFragmentToSingleMedicineFrag(medicine);
+//                Navigation.findNavController(getView()).navigate(action);
+//            }
+//        };
+//    }
 
     private void buildSheetDialog() {
 
@@ -233,10 +275,8 @@ public class MyMedicCaseFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //isFromCamera = true;
                 if (bitmap1 != null) {
-                    //handleUpload(bitmap1, isProfilePicture);
-                    Toast.makeText(getActivity(), "Camera", Toast.LENGTH_SHORT).show();
+                    files.add(fileUri.toString());
                 }
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 fileUri = null;
@@ -255,19 +295,107 @@ public class MyMedicCaseFragment extends Fragment {
                     e.printStackTrace();
                 }
                 if (bitmap2 != null) {
-                    //handleUpload(bitmap2, isProfilePicture);
-                    Toast.makeText(getActivity(), "GALLERY", Toast.LENGTH_SHORT).show();
-
+                    files.add(fileUri.toString());
                 }
-
-//                isFromCamera = false;
-//                if (isFromCamera) {
-//                    getActivity().getContentResolver().delete(fileUri, null, null);
-//                }
             }
         }
 
 
+    }
+
+    public void saveFiles()
+    {
+        try {
+            FileOutputStream fos = getActivity().openFileOutput("files", MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(files);
+            oos.close();
+            Toast.makeText(getActivity(), "SAVED", Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readFiles()
+    {
+        try {
+            FileInputStream fis = getActivity().openFileInput("files");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            files = (List<String>) ois.readObject();
+            Toast.makeText(getActivity(), "READ", Toast.LENGTH_SHORT).show();
+
+//            String GAG = Integer.toString(songs.size());
+//            Toast.makeText(this, GAG, Toast.LENGTH_LONG).show();
+            ois.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadImageDialog(String url) {
+
+        View dialogView = getLayoutInflater().inflate(R.layout.image_display_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        alertDialog = builder.setView(dialogView).show();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        final ProgressBar progressBar = dialogView.findViewById(R.id.img_loader_bar);
+        final ImageView imageView = dialogView.findViewById(R.id.img_display);
+        final ImageButton backBtn = dialogView.findViewById(R.id.img_dialog_back_btn);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressBar.setVisibility(View.GONE);
+                alertDialog.dismiss();
+            }
+        });
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        try {
+            Glide.with(dialogView).load(url).listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    //Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.failed_upload_image, Snackbar.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    progressBar.setVisibility(View.GONE);
+                    imageView.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            }).into(imageView);
+        } catch (Exception e) {
+
+        }
+    }
+
+
+
+
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Collections.reverse(files);
+        adapter.notifyDataSetChanged();
     }
 
 }
