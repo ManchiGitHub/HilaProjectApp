@@ -31,9 +31,7 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
     @Override
     public void onBindViewHolder(@NonNull ChatRoomsAdapter.ChatRoomsViewHolder holder, int position) {
 
-//        holder.timeStamp.setText("testing");
-        String name = mChatRooms.get(position).getName();
-        holder.contactNameTv.setText(name);
+        holder.contactNameTv.setText(mChatRooms.get(position).getContactNAme());
     }
 
     @Override

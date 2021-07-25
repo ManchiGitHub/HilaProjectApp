@@ -1,27 +1,25 @@
 package com.example.parkinson.features.chat;
 
+
+import com.google.firebase.database.PropertyName;
+
+
+// Class to hold the object received from firebase
 public class ChatRoom {
 
-    private String name;
-
-    private int id;
+    private String contactName;
 
     public ChatRoom() {
     }
 
-    public String getName() {
-        return name;
+    @PropertyName("contact")
+    public String getContactNAme() {
+
+        return this.contactName;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    @PropertyName("contact")
+    public void setContactNAme(String contactNAme) {
+        this.contactName = contactNAme;
     }
 }
