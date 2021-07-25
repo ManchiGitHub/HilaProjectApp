@@ -132,9 +132,10 @@ public class MyMedicCaseFragment extends Fragment {
                 buildSheetDialog();
             }
         });
-//        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v -> {
-//            getActivity().onBackPressed();
-//        });
+
+        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
 
     }
 

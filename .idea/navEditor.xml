@@ -59,19 +59,17 @@
                             <option name="y" value="736" />
                           </Point>
                         </option>
-                        <option name="myPositions">
-                          <map>
-                            <entry key="action_medicineFragment_to_MedicineCategoryFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_myMedicinesFragment_to_singleMedicineFrag">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                          </map>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="chatFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-124" />
+                            <option name="y" value="-52" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -81,13 +79,18 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-252" />
-                            <option name="y" value="367" />
+                            <option name="x" value="-259" />
+                            <option name="y" value="341" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="action_mainFragment_to_MyMedicCaseFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_mainFragment_to_chatFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

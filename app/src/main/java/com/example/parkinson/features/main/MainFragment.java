@@ -3,6 +3,7 @@ package com.example.parkinson.features.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,8 @@ public class MainFragment extends Fragment {
 
     ImageView medicineBadge;
     ImageView questionnaireBadge;
+
+    private Button chatBtn;
 
     RecyclerView messagesList;
 //    RecyclerView reportsList;
@@ -63,6 +66,8 @@ public class MainFragment extends Fragment {
 
         messagesList= view.findViewById(R.id.recyclerMessages);
 //        reportsList= view.findViewById(R.id.recyclerReports);
+
+        chatBtn = view.findViewById(R.id.frag_main_chat_btn);
     }
 
     private void initUi(View view) {
@@ -74,6 +79,13 @@ public class MainFragment extends Fragment {
         });
         medicCaseBtn.setOnClickListener(v -> {
             openMedicCaseFragment(view);
+        });
+
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChatFragment(v);
+            }
         });
 
     }
@@ -121,6 +133,11 @@ public class MainFragment extends Fragment {
 
     private void openMedicCaseFragment(View view) {
         NavDirections action = MainFragmentDirections.actionMainFragmentToMyMedicCaseFragment();
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    private void openChatFragment(View view) {
+        NavDirections action = MainFragmentDirections.actionMainFragmentToChatFragment();
         Navigation.findNavController(view).navigate(action);
     }
 
