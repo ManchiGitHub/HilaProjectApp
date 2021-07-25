@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.parkinson.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class ContactFragment extends Fragment {
     public interface OnChatClickListener {
         void onChatClicked(String userID);
@@ -26,10 +30,12 @@ public class ContactFragment extends Fragment {
 
     private OnChatClickListener listener;
 
-    //List
+
     private RecyclerView recyclerView;
-//    private ChatUsersAdapter userAdapter;
+    //    private ChatUsersAdapter userAdapter;
     private ChatRoomsAdapter chatRoomsAdapter;
+
+    private ArrayList<ChatRoom> chatRooms;
 
 
     //firebase
@@ -41,7 +47,7 @@ public class ContactFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            listener = (OnChatClickListener) context;
+//            listener = (OnChatClickListener) context;
         } catch (ClassCastException ex) {
             throw new ClassCastException("The Activity must implement OnChatClickListener interface");
         }
@@ -70,26 +76,57 @@ public class ContactFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull  View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
 
     //pulling all the users id's that i chatted with and then create user list with recyclerview of those users in the chats page
     private void loadAllMyChats() {
 
+        if (chatRooms == null) {
+            chatRooms = new ArrayList<>();
+        }
+
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        FirebaseDatabase.getInstance().getReference("Chats").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Doctors").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d("alih", "onDataChange: " + snapshot);
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+
+                    ChatRoom chatRoom = postSnapshot.getValue(ChatRoom.class);
+                    chatRooms.add(chatRoom);
+                }
+
+                Log.d("alih", "onDataChange: " + chatRooms);
+
+
+//                createChatList();
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                recyclerView.setLayoutManager(layoutManager);
+                ChatRoomsAdapter chatRoomsAdapter = new ChatRoomsAdapter(chatRooms);
+                recyclerView.setAdapter(chatRoomsAdapter);
             }
 
             @Override
-            public void onCancelled(@NonNull  DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
+//        FirebaseDatabase.getInstance().getReference("Chats").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                Log.d("alih", "onDataChange: " + snapshot);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull  DatabaseError error) {
+//
+//            }
+//        });
 
 //        progressBar.setVisibility(View.VISIBLE);
 //        databaseReference = FirebaseDatabase.getInstance().getReference("chatList").child(fUser.getUid());

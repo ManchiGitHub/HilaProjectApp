@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     app:cardElevation="2dp"
+    android:layout_margin="5dp"
     android:focusable="true"
     app:cardBackgroundColor="@color/white">
 
