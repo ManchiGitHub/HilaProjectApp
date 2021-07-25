@@ -15,51 +15,48 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
-import com.example.parkinson.features.medicine.MyMedicinesFragmentDirections;
-import com.example.parkinson.features.medicine.MyMedicinesMainAdapter;
-import com.example.parkinson.features.medicine.MyMedicinesMainAdapter.MyMedicinesMainAdapterListener;
-import com.example.parkinson.model.general_models.Medicine;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -69,27 +66,25 @@ import static com.example.parkinson.features.main.MainActivity.files;
 @AndroidEntryPoint
 public class MyMedicCaseFragment extends Fragment {
 
+    private ActivityResultLauncher<String> mRequestPermissionLauncher;
+    private ActivityResultLauncher<Uri> mTakePictureLauncher;
+    private ActivityResultLauncher<String> mChoosePictureLauncher;
+
     private MedicCaseViewModel medicCaseViewModel;
 
-    RecyclerView recyclerView;
-    MyMedicCaseMainAdapter adapter;
-    ImageButton addBtn;
-
-    // Activity requests
-    final int CAMERA_REQUEST = 1;
-    final int SELECT_IMAGE = 2;
-    final int WRITE_PERMISSION_REQUEST = 3;
-    boolean permission = true;
+    private FloatingActionButton fabBtn;
+    private RecyclerView recyclerView;
+    private MyMedicCaseMainAdapter adapter;
 
     //camera and gallery
-    Uri fileUri;
-    Bitmap bitmap1, bitmap2;
+    private File mPhotoFile;
+    private Uri fileUri;
+    private Bitmap bitmap1, bitmap2;
 
     //Dialogs
     private AlertDialog alertDialog;
 
-
-    public MyMedicCaseFragment(){
+    public MyMedicCaseFragment() {
         super(R.layout.fragment_medic_case);
     }
 
@@ -100,9 +95,15 @@ public class MyMedicCaseFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         medicCaseViewModel = new ViewModelProvider(this).get(MedicCaseViewModel.class);
 
@@ -110,8 +111,9 @@ public class MyMedicCaseFragment extends Fragment {
         initViews(view);
         //initUi(view);
         initObservers();
+        initLaunchers();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MyMedicCaseMainAdapter(files);
         recyclerView.setAdapter(adapter);
@@ -124,43 +126,27 @@ public class MyMedicCaseFragment extends Fragment {
             }
         });
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
+        fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 buildSheetDialog();
             }
         });
-
-        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v->{ getActivity().onBackPressed();
-       });
+//        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v -> {
+//            getActivity().onBackPressed();
+//        });
 
     }
 
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.medicCaseFragRecycler);
-        addBtn = view.findViewById(R.id.medicCaseFragAddBtn);
+//        addBtn = view.findViewById(R.id.medicCaseFragAddBtn);
+        fabBtn = view.findViewById(R.id.medic_case_fab_btn);
 
     }
 
-//    private void initUi(View view) {
-//        adapter = new MyMedicCaseMainAdapter(getMainAdapterListener());
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(adapter);
-//
-//        getView().findViewById(R.id.medicCaseFragExitBtn).setOnClickListener(v->{
-//            getActivity().onBackPressed();
-//        });
-//
-////        CardView addMedicine = view.findViewById(R.id.myMedicinesFragAddBtn);
-////        addMedicine.setOnClickListener(v -> {
-////            NavDirections action = MyMedicinesFragmentDirections.actionMedicineFragmentToMedicineCategoryFragment();
-////            Navigation.findNavController(view).navigate(action);
-////        });
-//    }
-
     private void initObservers() {
-        medicCaseViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading-> {
+        medicCaseViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading -> {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.updateLoadingScreen(isLoading);
         });
@@ -169,142 +155,122 @@ public class MyMedicCaseFragment extends Fragment {
         });
     }
 
-//
-//    private MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener getMainAdapterListener(){
-//        return new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
-//            @Override
-//            public void onMedicineClick(Medicine medicine) {
-//                NavDirections action = MyMedicinesFragmentDirections.actionMyMedicinesFragmentToSingleMedicineFrag(medicine);
-//                Navigation.findNavController(getView()).navigate(action);
-//            }
-//        };
-//    }
-
     private void buildSheetDialog() {
+        final BottomSheetDialogFragment dialog = BottomSheetDialogFragment.newInstance();
 
-            final BottomSheetDialog bottomDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
-            View bottomSheetView = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet, null);
-
-            LinearLayout takePic, selectPic;
-            takePic = bottomSheetView.findViewById(R.id.select_take_pic);
-            selectPic = bottomSheetView.findViewById(R.id.select_choose_pic);
-
-
-            takePic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    takePicture(CAMERA_REQUEST);
-                    bottomDialog.dismiss();
-                }
-            });
-
-            selectPic.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    askStoragePermissions(SELECT_IMAGE);
-                    bottomDialog.dismiss();
-                }
-            });
-
-            bottomDialog.setContentView(bottomSheetView);
-            bottomDialog.show();
-
-
-    }
-
-    private void takePicture(int requestCode) {
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "from");
-        fileUri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-        startActivityForResult(intent, requestCode);
-    }
-
-    private void askStoragePermissions(int requestCode) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            int hasWritePermission = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            int hasReadPermission = ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE);
-            if (hasWritePermission != PackageManager.PERMISSION_GRANTED && hasReadPermission != PackageManager.PERMISSION_GRANTED) { //no permissions
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, WRITE_PERMISSION_REQUEST);
-            } else { //have permissions
-                openGallery(requestCode);
+        dialog.setListener(new BottomSheetDialogFragment.BottomSheetInterfaceListener() {
+            @Override
+            public void OnSelectPic() {
+                takePicture();
+                dialog.dismiss();
             }
+
+            @Override
+            public void OnChoosePic() {
+                pickImageFromGalleryConfirmPermission();
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show(requireActivity().getSupportFragmentManager(), "add_file_dialog_fragment");
+    }
+
+    private void takePicture() {
+        try {
+            mPhotoFile = File.createTempFile(
+                    "IMG_",
+                    ".jpg",
+                    requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        fileUri = FileProvider.getUriForFile(requireActivity(), "com.example.parkinson.provider", mPhotoFile);
+
+        mTakePictureLauncher.launch(fileUri);
+    }
+
+    private void initLaunchers() {
+
+        mRequestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+                    @Override
+                    public void onActivityResult(Boolean isGranted) {
+                        if (isGranted) {
+                            pickImageFromGalleryConfirmPermission();
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Need permission to add image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        mTakePictureLauncher =
+                registerForActivityResult(new ActivityResultContracts.TakePicture(), new ActivityResultCallback<Boolean>() {
+                    @Override
+                    public void onActivityResult(Boolean result) {
+
+                        bitmap2 = null;
+                        try {
+
+                            bitmap1 = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(), fileUri));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (bitmap1 != null) {
+                            files.add(fileUri.toString());
+                        }
+                    }
+                });
+
+        mChoosePictureLauncher =
+                registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri uri) {
+
+                        if (uri != null) { // in case of user didnt choose a picture and returned to the app
+
+                            fileUri = uri;
+
+                            bitmap1 = null;
+
+                            try {
+                                bitmap2 = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(), fileUri));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (bitmap2 != null) {
+                                files.add(fileUri.toString());
+                            }
+
+                        }
+                    }
+                });
+    }
+
+    private void pickImageFromGalleryConfirmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int hasWritePermission = requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+            if (hasWritePermission == PackageManager.PERMISSION_GRANTED) {
+                pickImageFromGallery();
+            }
+            else {
+                mRequestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+        }
+        else {
+            pickImageFromGallery();
         }
     }
 
-    private void openGallery(int requestCode) {
-        //TODO ask permissions here!!!
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, requestCode);
+
+    private void pickImageFromGallery() {
+        mChoosePictureLauncher.launch("image/*");
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == WRITE_PERMISSION_REQUEST) {
-            if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getActivity(), "אין הרשאה", Toast.LENGTH_SHORT).show();
-                permission = false;
-            } else {
-
-                Toast.makeText(getActivity(), "ההרשאה ניתנה", Toast.LENGTH_SHORT).show();
-                permission = true;
-
-                openGallery(SELECT_IMAGE);
-            }
-        }
-
-    }
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CAMERA_REQUEST) {
-
-            if (resultCode == Activity.RESULT_OK) {
-
-                bitmap2 = null;
-                try {
-                    bitmap1 = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(), fileUri));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (bitmap1 != null) {
-                    files.add(fileUri.toString());
-                }
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                fileUri = null;
-            }
-        }
-
-        if (requestCode == SELECT_IMAGE) {
-
-            if (resultCode == Activity.RESULT_OK && permission == true) {
-
-                fileUri = data.getData();
-                bitmap1 = null;
-                try {
-                    bitmap2 = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getActivity().getContentResolver(), fileUri));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (bitmap2 != null) {
-                    files.add(fileUri.toString());
-                }
-            }
-        }
-
-
-    }
-
-    public void saveFiles()
-    {
+    public void saveFiles() {
         try {
             FileOutputStream fos = getActivity().openFileOutput("files", MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -318,8 +284,7 @@ public class MyMedicCaseFragment extends Fragment {
         }
     }
 
-    public void readFiles()
-    {
+    public void readFiles() {
         try {
             FileInputStream fis = getActivity().openFileInput("files");
             ObjectInputStream ois = new ObjectInputStream(fis);
@@ -339,6 +304,10 @@ public class MyMedicCaseFragment extends Fragment {
         }
     }
 
+    ProgressBar progressBar;
+    ImageView imageView;
+    ImageButton backBtn;
+
     private void loadImageDialog(String url) {
 
         View dialogView = getLayoutInflater().inflate(R.layout.image_display_dialog, null);
@@ -346,9 +315,9 @@ public class MyMedicCaseFragment extends Fragment {
         alertDialog = builder.setView(dialogView).show();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        final ProgressBar progressBar = dialogView.findViewById(R.id.img_loader_bar);
-        final ImageView imageView = dialogView.findViewById(R.id.img_display);
-        final ImageButton backBtn = dialogView.findViewById(R.id.img_dialog_back_btn);
+        progressBar = dialogView.findViewById(R.id.img_loader_bar);
+        ImageView imageView = dialogView.findViewById(R.id.img_display);
+        ImageButton backBtn = dialogView.findViewById(R.id.img_dialog_back_btn);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -380,10 +349,6 @@ public class MyMedicCaseFragment extends Fragment {
 
         }
     }
-
-
-
-
 
 
     @Override

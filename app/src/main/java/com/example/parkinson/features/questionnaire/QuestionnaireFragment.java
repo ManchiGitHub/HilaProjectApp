@@ -24,9 +24,9 @@ import javax.inject.Inject;
 
 public class QuestionnaireFragment extends Fragment {
 
-    MainViewModel mainViewModel;
+//    private MainViewModel mainViewModel;
 
-    QuestionnaireViewModel questionnaireViewModel;
+    private QuestionnaireViewModel questionnaireViewModel;
 
     ImageButton exitBtn;
     CardView nextBtn;
@@ -49,7 +49,7 @@ public class QuestionnaireFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+//        mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
         questionnaireViewModel = new ViewModelProvider(requireActivity()).get(QuestionnaireViewModel.class);
 
         initViews(view);

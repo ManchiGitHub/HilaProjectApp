@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.parkinson.R;
 import com.example.parkinson.common.LoadingScreen;
 import com.example.parkinson.features.on_boarding.OnBoardingActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -112,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
      * @param isLoading is true when waiting for data from server
      */
     public void updateLoadingScreen(Boolean isLoading) {
+
         if(isLoading){
             loadingScreen.show();
         } else {
@@ -161,5 +163,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         saveFiles();
+
+        // for testing
     }
 }

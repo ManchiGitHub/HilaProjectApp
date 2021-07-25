@@ -31,6 +31,9 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
@@ -42,7 +45,7 @@ public class LoginFragment extends Fragment {
     private TextView login;
 
     public LoginFragment() {
-        super(R.layout.fragment_login);
+        super(R.layout.fragment_login2);
     }
 
     @Override

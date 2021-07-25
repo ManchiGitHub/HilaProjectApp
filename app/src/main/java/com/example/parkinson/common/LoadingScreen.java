@@ -1,10 +1,11 @@
 package com.example.parkinson.common;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -22,15 +23,16 @@ public class LoadingScreen extends FrameLayout {
 
     LottieAnimationView animationView;
 
+
     public LoadingScreen(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        this.setBackgroundColor(ContextCompat.getColor(context, R.color.white_70));
+        this.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent));
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.layout_loading_screen, this, true);
 
-        animationView = findViewById(R.id.animationView);
+//        animationView = findViewById(R.id.animationView);
 
         //We set empty click listener because we want to disable on click events when loading screen in showing
         this.setOnClickListener(v -> {
@@ -39,13 +41,17 @@ public class LoadingScreen extends FrameLayout {
     }
 
     public void show(){
+
+
         this.setVisibility(View.VISIBLE);
-        animationView.playAnimation();
+//        animationView.playAnimation();
     }
 
     public void hide(){
+
+
         this.setVisibility(View.GONE);
-        animationView.cancelAnimation();
+//        animationView.cancelAnimation();
     }
 
 

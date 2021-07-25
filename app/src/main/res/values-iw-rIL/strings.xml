@@ -6,4 +6,7 @@
     <string name="user_name">שם משתמש</string>
     <string name="login_screen">מסך התחברות</string>
     <string name="one_and_a_half"> <sup>1</sup>/<sub>2</sub>     1      כדור  </string>
+    <string name="settings">הגדרות</string>
+    <string name="done">סיום</string>
+    <string name="email">אימייל</string>
 </resources>

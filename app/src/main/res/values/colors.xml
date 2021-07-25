@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">@color/aqua_marine</color>
     <color name="colorPrimary50">#8041CEA5</color>
-    <color name="colorPrimaryDark">@color/bright_cyan_two</color>
+    <color name="colorPrimaryDark">#00FFFFFF</color>
     <color name="colorAccent">#80d4d4d4</color>
 
     <color name="transparent">#00000000</color>
@@ -49,6 +49,8 @@
     <color name="brown_grey_50">#80979797</color>
     <color name="cool_grey">#9b9c9d</color>
     <color name="light_blue_grey">#d4d4d5</color>
+    <color name="lime">#A5D6A7</color>
+
 
 
     <color name="light_green">#B3F2CD</color>
