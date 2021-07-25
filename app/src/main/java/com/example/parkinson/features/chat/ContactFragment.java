@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ContactFragment extends Fragment {
@@ -88,19 +89,16 @@ public class ContactFragment extends Fragment {
         }
 
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ArrayList<Doctor> doctors = new ArrayList<>();
 
         FirebaseDatabase.getInstance().getReference("Doctors").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-
-                    ChatRoom chatRoom = postSnapshot.getValue(ChatRoom.class);
-                    chatRooms.add(chatRoom);
+                    Doctor doc = postSnapshot.getValue(Doctor.class);
+                    doctors.add(doc);
                 }
-
-                Log.d("alih", "onDataChange: " + chatRooms);
-
 
 //                createChatList();
 
