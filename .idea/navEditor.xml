@@ -67,8 +67,20 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-124" />
-                            <option name="y" value="-52" />
+                            <option name="x" value="-48" />
+                            <option name="y" value="-186" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="contactFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-354" />
+                            <option name="y" value="-128" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -90,7 +102,7 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_mainFragment_to_chatFragment">
+                            <entry key="action_mainFragment_to_contactFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

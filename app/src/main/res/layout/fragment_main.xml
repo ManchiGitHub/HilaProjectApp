@@ -195,7 +195,7 @@
         android:layout_width="match_parent"
         android:backgroundTint="@color/colorPrimary"
         android:text="Chat"
-        android:id="@+id/frag_main_chat_btn"
+        android:id="@+id/frag_main_contacts_btn"
         android:layout_margin="10dp"
         android:textAllCaps="false"
         android:layout_height="wrap_content"/>

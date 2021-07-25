@@ -39,12 +39,13 @@
             app:popEnterAnim="@anim/slide_left_enter"
             app:popExitAnim="@anim/slide_left_exit" />
         <action
-            android:id="@+id/action_mainFragment_to_chatFragment"
-            app:destination="@id/chatFragment"
+            android:id="@+id/action_mainFragment_to_contactFragment"
+            app:destination="@id/contactFragment"
             app:enterAnim="@anim/slide_right_enter"
             app:exitAnim="@anim/slide_right_exit"
             app:popEnterAnim="@anim/slide_left_enter"
             app:popExitAnim="@anim/slide_left_exit" />
+
     </fragment>
 
     <fragment
@@ -138,5 +139,18 @@
         tools:layout="@layout/fragment_chat"
         android:name="com.example.parkinson.features.chat.ChatFragment"
         android:label="ChatFragment" />
+    <fragment
+        android:id="@+id/contactFragment"
+        tools:layout="@layout/fragment_contacts"
+        android:name="com.example.parkinson.features.chat.ContactFragment"
+        android:label="ContactFragment" >
+        <action
+            android:id="@+id/action_contactFragment_to_chatFragment"
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/slide_right_enter"
+            app:exitAnim="@anim/slide_right_exit"
+            app:popEnterAnim="@anim/slide_left_enter"
+            app:popExitAnim="@anim/slide_left_exit" />
+    </fragment>
 
 </navigation>

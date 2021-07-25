@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.adapters.MessagesListAdapter;
 import com.example.parkinson.model.user_models.Patient;
-import javax.inject.Inject;
 
 public class MainFragment extends Fragment {
 
@@ -29,7 +28,7 @@ public class MainFragment extends Fragment {
     ImageView medicineBadge;
     ImageView questionnaireBadge;
 
-    private Button chatBtn;
+    private Button contactsBtn;
 
     RecyclerView messagesList;
 //    RecyclerView reportsList;
@@ -67,7 +66,7 @@ public class MainFragment extends Fragment {
         messagesList= view.findViewById(R.id.recyclerMessages);
 //        reportsList= view.findViewById(R.id.recyclerReports);
 
-        chatBtn = view.findViewById(R.id.frag_main_chat_btn);
+        contactsBtn = view.findViewById(R.id.frag_main_contacts_btn);
     }
 
     private void initUi(View view) {
@@ -81,10 +80,10 @@ public class MainFragment extends Fragment {
             openMedicCaseFragment(view);
         });
 
-        chatBtn.setOnClickListener(new View.OnClickListener() {
+        contactsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openChatFragment(v);
+                openContactsFragment(v);
             }
         });
 
@@ -136,8 +135,8 @@ public class MainFragment extends Fragment {
         Navigation.findNavController(view).navigate(action);
     }
 
-    private void openChatFragment(View view) {
-        NavDirections action = MainFragmentDirections.actionMainFragmentToChatFragment();
+    private void openContactsFragment(View view) {
+        NavDirections action = MainFragmentDirections.actionMainFragmentToContactFragment();
         Navigation.findNavController(view).navigate(action);
     }
 
