@@ -36,7 +36,6 @@ public class ChatFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.in_chat_layout, container, false);
-
     }
 
     @Override
@@ -49,7 +48,7 @@ public class ChatFragment extends Fragment {
         // make this a global variable if needed
         ChatViewModel chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
-        // call method to get all of the messages according to the provided room key
+        // call method to start getting all of the messages according to the provided room key
         chatViewModel.getMessagesFromDB(mRoomKey);
 
         /* 2 approaches to get all messages from the database */
