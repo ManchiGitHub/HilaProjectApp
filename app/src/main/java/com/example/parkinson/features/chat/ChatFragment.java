@@ -5,6 +5,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -14,24 +19,48 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.parkinson.R;
 import java.util.ArrayList;
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class ChatFragment extends Fragment {
 
-    public interface OnChatClickListener {
-        void onChatClicked(String userID);
-    }
 
-    private OnChatClickListener listener;
+    //Views
+    private ImageView profileIv;
+    private TextView usernameTv;
+    private ImageButton sendBtn;
+    private EditText messageEt;
+
+    //chat messages
+    private ChatAdapter chatAdapter;
+    private List<ChatMessage> chats;
     private RecyclerView recyclerView;
-    private ChatRoomsAdapter chatRoomsAdapter;
+
+
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.in_chat_layout, container, false);
 
-        return inflater.inflate(R.layout.in_chat_layout, container, false);
+
+        //init views
+        profileIv = rootView.findViewById(R.id.in_chat_profile_img);
+        usernameTv = rootView.findViewById(R.id.in_chat_username);
+        messageEt = rootView.findViewById(R.id.in_chat_et);
+        sendBtn = rootView.findViewById(R.id.chat_send_btn);
+
+
+        //init recyclerview
+        recyclerView = rootView.findViewById(R.id.in_chat_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
+        manager.setStackFromEnd(true); //show last first
+        recyclerView.setLayoutManager(manager);
+
+        return rootView;
 
     }
 
@@ -50,6 +79,10 @@ public class ChatFragment extends Fragment {
         chatViewModel.getChatMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<ChatMessage>>() {
             @Override
             public void onChanged(ArrayList<ChatMessage> chatMessages) {
+
+
+                chatAdapter  = new ChatAdapter(chatMessages); //create new adapter with loaded list
+                recyclerView.setAdapter(chatAdapter);
 
                 for (ChatMessage msg : chatMessages){
 

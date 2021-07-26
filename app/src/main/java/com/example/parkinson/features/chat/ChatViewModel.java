@@ -1,5 +1,8 @@
 package com.example.parkinson.features.chat;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -40,9 +43,12 @@ public class ChatViewModel extends ViewModel {
 
                 for (DataSnapshot snap : result.getChildren()) {
 
+
+
                     // exclude the 'contact' field in the database, and only get the messages
                     if (!(snap.getValue() instanceof String)) {
 
+                        //Log.d("llop", snap.getValue() + "");
                         ChatMessage message = snap.getValue(ChatMessage.class);
                         messages.add(message);
                     }
