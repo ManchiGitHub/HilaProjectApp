@@ -5,17 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
-import androidx.navigation.NavArgument;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.parkinson.R;
-import com.example.parkinson.features.main.MainFragmentDirections;
-
 import java.util.ArrayList;
 
 public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.ChatRoomsViewHolder> {
@@ -61,10 +55,11 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
                 @Override
                 public void onClick(View v) {
 
-                    NavDirections action = ContactFragmentDirections.actionContactFragmentToChatFragment();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("doctorID",mChatRooms.get(getAdapterPosition()).getContactNAme());
-                    Navigation.findNavController(v).navigate(action);
+//                    NavDirections action = ContactFragmentDirections.actionContactFragmentToChatFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("room_key", mChatRooms.get(getAdapterPosition()).getRoomKey());
+                    bundle.putString("contact_name", mChatRooms.get(getAdapterPosition()).getContactNAme());
+                    Navigation.findNavController(v).navigate(R.id.action_contactFragment_to_chatFragment, bundle);
 
                 }
             });
