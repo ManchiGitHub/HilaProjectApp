@@ -1,14 +1,20 @@
 package com.example.parkinson.features.chat;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.NavArgument;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinson.R;
+import com.example.parkinson.features.main.MainFragmentDirections;
 
 import java.util.ArrayList;
 
@@ -49,11 +55,16 @@ public class ChatRoomsAdapter extends RecyclerView.Adapter<ChatRoomsAdapter.Chat
             super(itemView);
 
             contactNameTv = itemView.findViewById(R.id.contact_name_tv);
-            timeStamp = itemView.findViewById(R.id.chat_cell_time_tv);
+            timeStamp = itemView.findViewById(R.id.contact_time);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    NavDirections action = ContactFragmentDirections.actionContactFragmentToChatFragment();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("doctorID",mChatRooms.get(getAdapterPosition()).getContactNAme());
+                    Navigation.findNavController(v).navigate(action);
 
                 }
             });

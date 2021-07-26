@@ -65,7 +65,7 @@
         style="@style/SemiBold15Black"
         android:gravity="center"
         android:paddingHorizontal="10dp"
-        android:inputType="numberDecimal"
+        android:inputType="phone"
         android:layout_marginHorizontal="50dp"
         android:popupBackground="@drawable/edit_text_selector"
         android:background="@drawable/edit_text_selector" />

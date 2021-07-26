@@ -59,7 +59,7 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        onBoardingViewModel = new ViewModelProvider(this).get(OnBoardingViewModel.class);
+        onBoardingViewModel = new ViewModelProvider(requireActivity()).get(OnBoardingViewModel.class);
 
         initUi(view);
         initObservers();

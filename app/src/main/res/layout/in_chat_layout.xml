@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/in_chat_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/in_chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/aqua_marine"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/in_chat_profile_img"
+                    android:layout_width="40dp"
+                    android:src="@drawable/hila_logo"
+                    android:layout_marginTop="7dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/in_chat_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginTop="12dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                    android:textColor="@color/white"
+                    android:layout_toEndOf="@id/in_chat_profile_img"
+                    android:text="מכון היל״ה"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/in_chat_status_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/in_chat_username"
+                    android:layout_marginStart="7dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/in_chat_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/send_text_layout"
+        android:layout_below="@id/in_chat_appbar"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="3dp" />
+
+    <RelativeLayout
+        android:id="@+id/send_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bottom_sheet_et_shape"
+        android:padding="8dp"
+        android:translationZ="1dp">
+
+        <EditText
+            android:id="@+id/in_chat_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_toStartOf="@id/chat_send_btn"
+            android:background="@color/transparent"
+            android:textColorHint="@color/grey"
+            android:hint="הכנס הודעה"
+            android:padding="5dp" />
+
+        <ImageButton
+            android:id="@+id/chat_send_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_send_black_24dp"
+            android:tint="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
