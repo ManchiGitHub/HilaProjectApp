@@ -2,7 +2,7 @@ package com.example.parkinson.features.chat;
 
 public class ChatMessage {
 
-    private long senderId;
+    private String senderId;
 
     private String senderName;
 
@@ -16,11 +16,11 @@ public class ChatMessage {
 
     }
 
-    public long getSenderId() {
+    public String getSenderId() {
         return senderId;
     }
 
-    public void setSenderId(long senderId) {
+    public void setSenderId(String senderId) {
         this.senderId = senderId;
     }
 

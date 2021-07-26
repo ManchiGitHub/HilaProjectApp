@@ -20,6 +20,7 @@ public class ChatViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<ChatRoom>> mChatRooms = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ChatMessage>> mMessages = new MutableLiveData<>();
+    private final MutableLiveData<ChatMessage> mMessage = new MutableLiveData<>();
 
     @Inject
     public ChatViewModel(ChatRepository repository) {
@@ -50,6 +51,11 @@ public class ChatViewModel extends ViewModel {
 
                 mMessages.setValue(messages);
             }
+
+            @Override
+            public void onNewMessage(ChatMessage message) {
+                mMessage.setValue(message);
+            }
         });
     }
 
@@ -59,6 +65,10 @@ public class ChatViewModel extends ViewModel {
 
     public LiveData<ArrayList<ChatMessage>> getChatMessages() {
         return this.mMessages;
+    }
+
+    public LiveData<ChatMessage> getChatMessage() {
+        return this.mMessage;
     }
 
     public void getMessagesFromDB(String roomKey) {

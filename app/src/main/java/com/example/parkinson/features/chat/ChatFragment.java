@@ -13,6 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.parkinson.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -26,6 +29,7 @@ public class ChatFragment extends Fragment {
     private OnChatClickListener listener;
     private RecyclerView recyclerView;
     private ChatRoomsAdapter chatRoomsAdapter;
+    private String mRoomKey;
 
 
     @Override
@@ -39,43 +43,70 @@ public class ChatFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String roomKEy = requireArguments().getString("room_key");
+        mRoomKey = requireArguments().getString("room_key");
         String contactName = requireArguments().getString("contact_name");
 
         // make this a global variable if needed
         ChatViewModel chatViewModel = new ViewModelProvider(this).get(ChatViewModel.class);
 
         // call method to get all of the messages according to the provided room key
-        chatViewModel.getMessagesFromDB(roomKEy);
+        chatViewModel.getMessagesFromDB(mRoomKey);
+
+        /* 2 approaches to get all messages from the database */
+
         chatViewModel.getChatMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<ChatMessage>>() {
             @Override
             public void onChanged(ArrayList<ChatMessage> chatMessages) {
 
-                for (ChatMessage msg : chatMessages){
-
-                    // the messages...
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("\nmessage: ").
-                            append(msg.getMessage()).
-                            append("\nsender name: ").
-                            append(msg.getSenderName()).
-                            append("\nsender id: ").
-                            append(msg.getSenderId()).
-                            append("\ntime stamp: ").
-                            append(msg.getTimestamp()).
-                            append("\nis doctor: ").
-                            append(msg.getIsDoctor());
-
-                    Log.d("alih", "onChanged: " + builder.toString());
-                }
+                // get all existing messages in here.
             }
         });
 
+        chatViewModel.getChatMessage().observe(getViewLifecycleOwner(), new Observer<ChatMessage>() {
+            @Override
+            public void onChanged(ChatMessage message) {
 
-
+                // get all the messages here, one by one.
+                // new messages will also appear here.
+            }
+        });
 
         initializeRecyclerView(view);
 
+        view.findViewById(R.id.chat_send_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage();
+            }
+        });
+
+    }
+
+    private void sendMessage(){
+
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // create a 'ChatMessage' object
+        ChatMessage message = new ChatMessage();
+
+        // get the new message
+        message.setMessage("some new message");
+
+        // can be empty for now
+        message.setSenderName(" ");
+
+        message.setSenderId(userID);
+        message.setDoctor(false);
+        message.setTimestamp(System.currentTimeMillis());
+
+        String timeStampKey = String.valueOf(message.getTimestamp());
+
+        FirebaseDatabase.
+                getInstance().
+                getReference().
+                child("Chats").
+                child(mRoomKey).
+                child(timeStampKey).setValue(message);
     }
 
     private void initializeRecyclerView(View view) {

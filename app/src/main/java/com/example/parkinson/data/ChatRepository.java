@@ -1,19 +1,21 @@
 package com.example.parkinson.data;
 
 import android.util.Log;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.parkinson.features.chat.ChatMessage;
 import com.example.parkinson.features.chat.ChatRoom;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -24,6 +26,8 @@ public class ChatRepository {
         void onRoomsReceived(ArrayList<ChatRoom> chatRooms);
 
         void onRoomOpen(DataSnapshot result);
+
+        void onNewMessage(ChatMessage message);
     }
 
     private ChatRepositoryListener listener;
@@ -33,6 +37,12 @@ public class ChatRepository {
 
     }
 
+    /**
+     * Call this function to get all the messages in a room.
+     * <br> The key consists of the patient's id and the doctor's id:
+     * <b>{patientID}_{doctorID}</b>
+     * @param roomKey The room id.
+     */
     public void loadMessages(String roomKey){
 
         FirebaseDatabase.getInstance().getReference().child("Chats").child(roomKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -44,6 +54,38 @@ public class ChatRepository {
                 else{
                     Log.d("TAG", "onComplete: failed " + task.getException().toString());
                 }
+            }
+        });
+
+
+        FirebaseDatabase.getInstance().getReference().child("Chats").child(roomKey).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (!(snapshot.getValue() instanceof String)){
+                    ChatMessage message = snapshot.getValue(ChatMessage.class);
+//                    Log.d("alih", "onChildAdded: " + snapshot.getValue());
+                    listener.onNewMessage(message);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
 
