@@ -51,27 +51,33 @@ public class ChatFragment extends Fragment {
         // call method to start getting all of the messages according to the provided room key
         chatViewModel.getMessagesFromDB(mRoomKey);
 
-        /* 2 approaches to get all messages from the database */
+        /*
+        * 2 approaches to get all messages from the database:
+        * after calling 'getMessagesFromDB, you can either get all of them in an array,
+        * or get all of them, but one by one .
+        */
 
+        // get all existing messages in here.
         chatViewModel.getChatMessages().observe(getViewLifecycleOwner(), new Observer<ArrayList<ChatMessage>>() {
             @Override
             public void onChanged(ArrayList<ChatMessage> chatMessages) {
 
-                // get all existing messages in here.
+                // get all messages from here
             }
         });
 
+        // new messages (of both sides) will be here
         chatViewModel.getChatMessage().observe(getViewLifecycleOwner(), new Observer<ChatMessage>() {
             @Override
             public void onChanged(ChatMessage message) {
 
-                // get all the messages here, one by one.
-                // new messages will also appear here.
+                // get a new message from here
             }
         });
 
         initializeRecyclerView(view);
 
+        // temporary click listener
         view.findViewById(R.id.chat_send_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
