@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.parkinson.R;
 import com.example.parkinson.common.LoadingScreen;
+import com.example.parkinson.features.medic_case.MedicFile;
 import com.example.parkinson.features.on_boarding.OnBoardingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private LoadingScreen loadingScreen;
 
     //files list
-    public static List<String> files = new ArrayList<>();
+    public static List<MedicFile> files = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             FileInputStream fis = openFileInput("files");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            files = (List<String>) ois.readObject();
+            files = (List<MedicFile>) ois.readObject();
             ois.close();
 
         } catch (FileNotFoundException e) {

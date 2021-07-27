@@ -3,10 +3,14 @@ package com.example.parkinson.data;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.parkinson.features.chat.ChatMessage;
 import com.example.parkinson.features.chat.ChatRoom;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,7 +27,9 @@ public class ChatRepository {
     public interface ChatRepositoryListener {
         void onRoomsReceived(ArrayList<ChatRoom> chatRooms);
 
-        void onRoomOpen(DataSnapshot result);
+        void onRoomOpen(ArrayList<ChatMessage> list);
+
+        void onNewMessage(ChatMessage message);
     }
 
     private ChatRepositoryListener listener;
@@ -35,17 +41,75 @@ public class ChatRepository {
 
     public void loadMessages(String roomKey){
 
+
+        FirebaseDatabase.getInstance().getReference().child("Chats").child(roomKey).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                ArrayList<ChatMessage> list = new ArrayList<>();
+                for (DataSnapshot snap : snapshot.getChildren())
+                {
+                    if(!(snap.getValue() instanceof String))
+                    {
+                        ChatMessage chatMessage = snap.getValue(ChatMessage.class);
+                        list.add(chatMessage);
+                    }
+                }
+                listener.onRoomOpen(list);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         FirebaseDatabase.getInstance().getReference().child("Chats").child(roomKey).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    listener.onRoomOpen(task.getResult());
+                   // listener.onRoomOpen(task.getResult());
+
+
                 }
                 else{
                     Log.d("TAG", "onComplete: failed " + task.getException().toString());
                 }
             }
         });
+
+        FirebaseDatabase.getInstance().getReference().child("Chats").child(roomKey).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if (!(snapshot.getValue() instanceof String)){
+                    ChatMessage message = snapshot.getValue(ChatMessage.class);
+//                    Log.d("alih", "onChildAdded: " + snapshot.getValue());
+                    listener.onNewMessage(message);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 
@@ -54,7 +118,7 @@ public class ChatRepository {
         ArrayList<ChatRoom> chatRooms = new ArrayList<>();
         String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        FirebaseDatabase.getInstance().getReference("Chats").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("Chats").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 

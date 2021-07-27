@@ -9,6 +9,7 @@
         android:id="@+id/chat_item_profile"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:visibility="gone"
         android:layout_alignParentTop="true"
         android:src="@drawable/hila_logo" />
 

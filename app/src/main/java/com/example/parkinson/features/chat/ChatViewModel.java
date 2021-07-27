@@ -23,6 +23,7 @@ public class ChatViewModel extends ViewModel {
 
     private final MutableLiveData<ArrayList<ChatRoom>> mChatRooms = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<ChatMessage>> mMessages = new MutableLiveData<>();
+    private final MutableLiveData<ChatMessage> cMessage = new MutableLiveData<>();
 
     @Inject
     public ChatViewModel(ChatRepository repository) {
@@ -37,24 +38,29 @@ public class ChatViewModel extends ViewModel {
             }
 
             @Override
-            public void onRoomOpen(DataSnapshot result) {
+            public void onRoomOpen(ArrayList<ChatMessage> list) {
 
-                ArrayList<ChatMessage> messages = new ArrayList<>();
+//                ArrayList<ChatMessage> messages = new ArrayList<>();
+//
+//                for (DataSnapshot snap : result.getChildren()) {
+//
+//
+//
+//                    // exclude the 'contact' field in the database, and only get the messages
+//                    if (!(snap.getValue() instanceof String)) {
+//
+//                        //Log.d("llop", snap.getValue() + "");
+//                        ChatMessage message = snap.getValue(ChatMessage.class);
+//                        messages.add(message);
+//                    }
+//                }
 
-                for (DataSnapshot snap : result.getChildren()) {
+                mMessages.setValue(list);
+            }
 
-
-
-                    // exclude the 'contact' field in the database, and only get the messages
-                    if (!(snap.getValue() instanceof String)) {
-
-                        //Log.d("llop", snap.getValue() + "");
-                        ChatMessage message = snap.getValue(ChatMessage.class);
-                        messages.add(message);
-                    }
-                }
-
-                mMessages.setValue(messages);
+            @Override
+            public void onNewMessage(ChatMessage message) {
+                cMessage.setValue(message);
             }
         });
     }
@@ -70,4 +76,9 @@ public class ChatViewModel extends ViewModel {
     public void getMessagesFromDB(String roomKey) {
         chatRepository.loadMessages(roomKey);
     }
+
+    public LiveData<ChatMessage> getMessage() {
+        return this.cMessage;
+    }
+
 }

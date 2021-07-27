@@ -24,11 +24,11 @@ public class MainFragment extends Fragment {
     CardView medicineBtn;
     CardView questionnaireBtn;
     CardView medicCaseBtn;
+    CardView contactsBtn;
 
     ImageView medicineBadge;
     ImageView questionnaireBadge;
 
-    private Button contactsBtn;
 
     RecyclerView messagesList;
 //    RecyclerView reportsList;
@@ -63,10 +63,10 @@ public class MainFragment extends Fragment {
         medicineBadge = view.findViewById(R.id.mainFragMedicineBadge);
         questionnaireBadge = view.findViewById(R.id.mainFragQuestionnaireBadge);
 
-        messagesList= view.findViewById(R.id.recyclerMessages);
+        //messagesList= view.findViewById(R.id.recyclerMessages);
 //        reportsList= view.findViewById(R.id.recyclerReports);
 
-        contactsBtn = view.findViewById(R.id.frag_main_contacts_btn);
+        contactsBtn = view.findViewById(R.id.mainFragMessageBtn);
     }
 
     private void initUi(View view) {
@@ -80,11 +80,15 @@ public class MainFragment extends Fragment {
             openMedicCaseFragment(view);
         });
 
-        contactsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openContactsFragment(v);
-            }
+//        contactsBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openContactsFragment(v);
+//            }
+//        });
+
+        contactsBtn.setOnClickListener(v -> {
+            openContactsFragment(view);
         });
 
     }
@@ -97,11 +101,11 @@ public class MainFragment extends Fragment {
 //            ReportsListAdapter adapter = new ReportsListAdapter(data);
 //            reportsList.setAdapter(adapter);
 //        });
-        mainViewModel.messagesData.observe(getViewLifecycleOwner(),data-> {
-            MessagesListAdapter adapter = new MessagesListAdapter(data);
-            messagesList.setAdapter(adapter);
-
-        });
+//        mainViewModel.messagesData.observe(getViewLifecycleOwner(),data-> {
+//            MessagesListAdapter adapter = new MessagesListAdapter(data);
+//            messagesList.setAdapter(adapter);
+//
+//        });
 
     }
 

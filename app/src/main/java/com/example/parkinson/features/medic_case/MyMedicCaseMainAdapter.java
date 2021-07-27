@@ -2,10 +2,12 @@ package com.example.parkinson.features.medic_case;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +20,9 @@ import com.example.parkinson.features.medicine.binder.MedicineBinderMedicine;
 import com.example.parkinson.features.medicine.models.CategoryEmpty;
 import com.example.parkinson.model.general_models.Medicine;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import mva2.adapter.ItemSection;
 import mva2.adapter.ListSection;
@@ -26,7 +30,7 @@ import mva2.adapter.MultiViewAdapter;
 
 public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMainAdapter.MyMedidCaseViewHolder> {
 
-    private List<String> files;
+    private List<MedicFile> files;
     MyMedicCaseMainAdapterListener listener;
 
     @NonNull
@@ -39,8 +43,15 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
 
     @Override
     public void onBindViewHolder(@NonNull MyMedidCaseViewHolder holder, int position) {
-        String uriString = files.get(position).toString();
+
+
+
+        String uriString = files.get(position).getFilePath().toString();
         Glide.with(holder.itemView).asBitmap().load(uriString).into(holder.imageView);
+
+        holder.timeStamp.setText(files.get(position).getTimeStamp());
+
+
 
 
     }
@@ -66,18 +77,20 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
         this.listener = listener;
     }
 
-    public MyMedicCaseMainAdapter(List<String> files) {
+    public MyMedicCaseMainAdapter(List<MedicFile> files) {
         this.files = files;
     }
 
     public class MyMedidCaseViewHolder extends RecyclerView.ViewHolder
     {
         ImageView imageView;
+        TextView timeStamp;
 
         public MyMedidCaseViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.file_pic);
+            timeStamp = itemView.findViewById(R.id.file_added_time_stamp);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

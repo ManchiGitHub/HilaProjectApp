@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -55,8 +56,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -115,6 +118,7 @@ public class MyMedicCaseFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        //Collections.reverseOrder();
         adapter = new MyMedicCaseMainAdapter(files);
         recyclerView.setAdapter(adapter);
 
@@ -122,7 +126,7 @@ public class MyMedicCaseFragment extends Fragment {
             @Override
             public void onFileClicked(int position, View view) {
 
-                loadImageDialog(files.get(position));
+                loadImageDialog(files.get(position).getFilePath());
             }
         });
 
@@ -220,7 +224,12 @@ public class MyMedicCaseFragment extends Fragment {
                             e.printStackTrace();
                         }
                         if (bitmap1 != null) {
-                            files.add(fileUri.toString());
+                            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+                            String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
+                            MedicFile medicFile = new MedicFile();
+                            medicFile.setFilePath(fileUri.toString());
+                            medicFile.setTimeStamp(chatTime);
+                            files.add(medicFile);
                         }
                     }
                 });
@@ -242,7 +251,12 @@ public class MyMedicCaseFragment extends Fragment {
                                 e.printStackTrace();
                             }
                             if (bitmap2 != null) {
-                                files.add(fileUri.toString());
+                                Calendar calendar = Calendar.getInstance(Locale.getDefault());
+                                String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
+                                MedicFile medicFile = new MedicFile();
+                                medicFile.setFilePath(fileUri.toString());
+                                medicFile.setTimeStamp(chatTime);
+                                files.add(medicFile);
                             }
 
                         }
@@ -289,7 +303,7 @@ public class MyMedicCaseFragment extends Fragment {
         try {
             FileInputStream fis = getActivity().openFileInput("files");
             ObjectInputStream ois = new ObjectInputStream(fis);
-            files = (List<String>) ois.readObject();
+            files = (List<MedicFile>) ois.readObject();
             Toast.makeText(getActivity(), "READ", Toast.LENGTH_SHORT).show();
 
 //            String GAG = Integer.toString(songs.size());
@@ -324,8 +338,7 @@ public class MyMedicCaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.GONE);
-                alertDialog.dismiss();
-            }
+                alertDialog.dismiss(); }
         });
 
         progressBar.setVisibility(View.VISIBLE);
@@ -360,7 +373,7 @@ public class MyMedicCaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Collections.reverse(files);
+        //Collections.reverse(files);
         adapter.notifyDataSetChanged();
     }
 

@@ -44,7 +44,7 @@
                     android:id="@+id/in_chat_status_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/in_chat_username"
+                    android:layout_below="@id/contacts_username"
                     android:layout_marginStart="7dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
