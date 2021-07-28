@@ -77,7 +77,8 @@ public class SingleMedicineFragment extends Fragment {
 //        });
 
         getView().findViewById(R.id.myMedicinesFragSaveButton).setOnClickListener(v -> {
-            this.medicine.setValue(Double.valueOf(valueEt.getText().toString()));
+           // this.medicine.setValue(Double.valueOf(valueEt.getText().toString()));
+            this.medicine.setValue(valueEt.getText().toString());
             singleMedicineViewModel.saveMedicine();
             getActivity().onBackPressed();
         });

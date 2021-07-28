@@ -3,62 +3,56 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/contacts_appbar"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:elevation="8dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/in_chat_toolbar"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/aqua_marine"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:background="@color/colorPrimary">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/contactFragExitBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:padding="23dp"
+                android:src="@drawable/ic_close_round" />
 
-                <!--                <de.hdodenhof.circleimageview.CircleImageView-->
-                <!--                    android:id="@+id/in_chat_profile_img"-->
-                <!--                    android:layout_width="40dp"-->
-                <!--                    android:layout_height="40dp"-->
-                <!--                    android:layout_gravity="center"/>-->
+            <TextView
+                android:id="@+id/contactFragTitle"
+                style="@style/Title25White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/assistant_extrabold"
+                android:gravity="start"
+                android:paddingHorizontal="23dp"
+                android:paddingVertical="17dp"
+                android:paddingEnd="50dp"
+                android:text="הודעות"
+                android:textSize="30sp" />
 
-                <TextView
-                    android:id="@+id/contacts_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="7dp"
-                    android:layout_marginTop="12dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textColor="@color/white"
-                    android:text="הודעות"
-                    android:textSize="18sp" />
+        </FrameLayout>
 
-                <TextView
-                    android:id="@+id/in_chat_status_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/contacts_username"
-                    android:layout_marginStart="7dp"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-            </RelativeLayout>
-
-        </androidx.appcompat.widget.Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contacts_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/contacts_appbar"
+        android:layout_below="@id/cardView2"
         android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="3dp" />
 

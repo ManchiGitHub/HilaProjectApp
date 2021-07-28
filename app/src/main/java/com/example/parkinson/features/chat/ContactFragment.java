@@ -32,6 +32,8 @@ public class ContactFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         return inflater.inflate(R.layout.fragment_contacts, container, false);
+
+
     }
 
     @Override
@@ -39,6 +41,8 @@ public class ContactFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initializeRecyclerView(view);
+
+
 
         // initialize chat viewmodel and observe the chat list
         ChatViewModel chatViewModel = new ViewModelProvider(requireActivity()).get(ChatViewModel.class);
@@ -51,13 +55,20 @@ public class ContactFragment extends Fragment {
             }
         });
 
+        getView().findViewById(R.id.contactFragExitBtn).setOnClickListener(v -> {
+            getActivity().onBackPressed();
+        });
+
 //        loadChatRooms();
+
     }
 
     private void initializeRecyclerView(View view) {
         recyclerView = view.findViewById(R.id.contacts_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
     }
 
 //

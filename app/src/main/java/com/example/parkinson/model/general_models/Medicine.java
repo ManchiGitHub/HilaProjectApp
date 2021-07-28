@@ -10,7 +10,7 @@ public class Medicine implements Parcelable {
 //    private String categoryId;
 
     private String name;
-    private Double value;
+    private String value;
     List<Time> hoursArr;
 
     public Medicine() {
@@ -24,14 +24,14 @@ public class Medicine implements Parcelable {
     protected Medicine(Parcel in) {
         id = in.readString();
         name = in.readString();
-        value = in.readDouble();
+        value = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeDouble(value);
+        dest.writeString(value);
     }
 
     @Override
@@ -67,11 +67,11 @@ public class Medicine implements Parcelable {
         this.name = name;
     }
 
-    public Double getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(String value) {
         this.value = value;
     }
 
@@ -83,25 +83,25 @@ public class Medicine implements Parcelable {
         this.hoursArr = hoursArr;
     }
 
-    public String dosageString() {
-        if (value == 0.25) {
-            return "רבע כדור";
-        } else if (value == 0.50) {
-            return "חצי כדור";
-        } else if (value == 0.75) {
-            return "שלושת רבעי כדור";
-        } else if (value == 1.00) {
-            return "כדור בודד";
-        } else if (value == 1.25) {
-            return "כדור ורבע";
-        } else if (value == 1.50) {
-            return "כדור וחצי";
-        } else if (value == 1.75) {
-            return "כדור ושלושת רבעי";
-        } else if (value == 2.00) {
-            return "שני כדורים";
-        }
-        return "";
-    }
+//    public String dosageString() {
+//        if (value == 0.25) {
+//            return "רבע כדור";
+//        } else if (value == 0.50) {
+//            return "חצי כדור";
+//        } else if (value == 0.75) {
+//            return "שלושת רבעי כדור";
+//        } else if (value == 1.00) {
+//            return "כדור בודד";
+//        } else if (value == 1.25) {
+//            return "כדור ורבע";
+//        } else if (value == 1.50) {
+//            return "כדור וחצי";
+//        } else if (value == 1.75) {
+//            return "כדור ושלושת רבעי";
+//        } else if (value == 2.00) {
+//            return "שני כדורים";
+//        }
+//        return "";
+//    }
 
 }
