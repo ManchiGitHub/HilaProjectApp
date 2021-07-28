@@ -183,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableTop="@drawable/ic_person_black_24dp"
+                    android:drawableTop="@drawable/ic_baseline_message_24"
                     android:drawablePadding="5dp"
                     android:text="הודעות" />
 
