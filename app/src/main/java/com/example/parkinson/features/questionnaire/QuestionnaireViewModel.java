@@ -40,12 +40,12 @@ public class QuestionnaireViewModel extends ViewModel {
      * when isNewQuestionnaire is true - get question list from data
      * else need to update last questionnaire - get questionnaire from user
       */
-    public void init(Boolean isNewQuestionnaire) {
+    public void init(Boolean isNewQuestionnaire, String index) {
         isLoading.postValue(true);
         if(isNewQuestionnaire){
-            dataRepository.getFollowUpQuestionnaire(setQuestionnaireListener());
+            dataRepository.getFollowUpQuestionnaire(setQuestionnaireListener(index));
         } else {
-            userRepository.getQuestionnaire(setQuestionnaireListener());
+            userRepository.getQuestionnaire(setQuestionnaireListener(index));
         }
     }
 
@@ -70,13 +70,13 @@ public class QuestionnaireViewModel extends ViewModel {
         ((OpenQuestion) questionnaire.getQuestionList().get(position)).setAnswer(answer);
     }
 
-    private ValueEventListener setQuestionnaireListener() {
+    private ValueEventListener setQuestionnaireListener(String index) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     List<Question> questionList = new ArrayList<>();
-                        for (DataSnapshot questionnaire : dataSnapshot.child("questionList").getChildren()) {
+                        for (DataSnapshot questionnaire : dataSnapshot.child(index).child("questionList").getChildren()) {
 
                             Question question = questionnaire.getValue(Question.class);
 

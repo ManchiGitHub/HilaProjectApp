@@ -36,7 +36,7 @@ public class MainViewModel extends ViewModel {
     private final UserRepository userRepository;
     private final DataRepository dataRepository;
 
-    MutableLiveData<Patient> patientEvent;
+    public MutableLiveData<Patient> patientEvent;
     MutableLiveData<Boolean> isLoading;
 
     List<Report> reports = new ArrayList<>();

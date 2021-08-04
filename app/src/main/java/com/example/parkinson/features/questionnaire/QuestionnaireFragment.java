@@ -58,7 +58,8 @@ public class QuestionnaireFragment extends Fragment {
 
         //getting Args from NavigationComponent
         Boolean isNewQuestionnaire = QuestionnaireFragmentArgs.fromBundle(getArguments()).getIsNewQuestionnaire();
-        questionnaireViewModel.init(isNewQuestionnaire);
+        String index = QuestionnaireFragmentArgs.fromBundle(getArguments()).getIndex();
+        questionnaireViewModel.init(isNewQuestionnaire, index);
     }
 
     private void initViews(View view){

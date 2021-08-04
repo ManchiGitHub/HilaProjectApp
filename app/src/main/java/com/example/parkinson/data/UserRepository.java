@@ -84,6 +84,10 @@ final public class UserRepository {
         userTable.child(firebaseUser.getUid()).child(EDataSourceData.INDICES_LIST.name).addChildEventListener(listener);
     }
 
+    public void getQuestionnaireList(ChildEventListener listener) {
+        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).addChildEventListener(listener);
+    }
+
     public void postMedication(Medicine medicine) {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("needToUpdateMedicine").setValue(false);
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.INDICES_LIST.name).child(medicine.getId()).setValue(medicine);

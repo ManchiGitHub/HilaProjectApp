@@ -3,7 +3,7 @@ package com.example.parkinson.data.enums;
 /** An enum class of all child tables names in User DatabaseReference **/
 public enum EDataSourceUser {
     USER_DETAILS("user_details"),
-    QUESTIONNAIRE("questionnaire"),
+    QUESTIONNAIRE("questionnaires"),
     INDICES_LIST("indices_list"),
     REPORTS("reports");
 

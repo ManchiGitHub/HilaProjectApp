@@ -125,7 +125,10 @@ public class MainFragment extends Fragment {
 
     /** Navigates to QuestionnaireFragment with NavigationController with isNewQuestionnaire Args **/
     private void openQuestionnaireFragment(View view){
-        NavDirections action = MainFragmentDirections.actionMainFragmentToQuestionnaireFragment(mainViewModel.patientEvent.getValue().getHasUnansweredQuestionnaire());
+//        NavDirections action = MainFragmentDirections.actionMainFragmentToQuestionnaireFragment(mainViewModel.patientEvent.getValue().getHasUnansweredQuestionnaire());
+//        Navigation.findNavController(view).navigate(action);
+
+        NavDirections action = MainFragmentDirections.actionMainFragmentToQuestionnaireListFragment();
         Navigation.findNavController(view).navigate(action);
     }
 
