@@ -60,8 +60,8 @@ public class MainFragment extends Fragment {
         medicineBtn = view.findViewById(R.id.mainFragMedicineBtn);
         questionnaireBtn = view.findViewById(R.id.mainFragQuestionnaireBtn);
         medicCaseBtn = view.findViewById(R.id.mainFragMedicCaseBtn);
-        medicineBadge = view.findViewById(R.id.mainFragMedicineBadge);
-        questionnaireBadge = view.findViewById(R.id.mainFragQuestionnaireBadge);
+//        medicineBadge = view.findViewById(R.id.mainFragMedicineBadge);
+//        questionnaireBadge = view.findViewById(R.id.mainFragQuestionnaireBadge);
 
         //messagesList= view.findViewById(R.id.recyclerMessages);
 //        reportsList= view.findViewById(R.id.recyclerReports);
@@ -95,7 +95,7 @@ public class MainFragment extends Fragment {
 
     private void initObservers() {
         mainViewModel.patientEvent.observe(getViewLifecycleOwner(), patient -> {
-            handlePatientData(patient);
+            //handlePatientData(patient);
         });
 //        mainViewModel.reportsData.observe(getViewLifecycleOwner(),data->{
 //            ReportsListAdapter adapter = new ReportsListAdapter(data);
@@ -109,19 +109,19 @@ public class MainFragment extends Fragment {
 
     }
 
-    private void handlePatientData(Patient patient) {
-        if (patient.getHasUnansweredQuestionnaire()) {
-            questionnaireBadge.setVisibility(View.VISIBLE);
-        } else {
-            questionnaireBadge.setVisibility(View.INVISIBLE);
-        }
-
-        if (patient.getNeedToUpdateMedicine()) {
-            medicineBadge.setVisibility(View.VISIBLE);
-        } else {
-            medicineBadge.setVisibility(View.INVISIBLE);
-        }
-    }
+//    private void handlePatientData(Patient patient) {
+//        if (patient.getHasUnansweredQuestionnaire()) {
+//            questionnaireBadge.setVisibility(View.VISIBLE);
+//        } else {
+//            questionnaireBadge.setVisibility(View.INVISIBLE);
+//        }
+//
+//        if (patient.getNeedToUpdateMedicine()) {
+//            medicineBadge.setVisibility(View.VISIBLE);
+//        } else {
+//            medicineBadge.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
     /** Navigates to QuestionnaireFragment with NavigationController with isNewQuestionnaire Args **/
     private void openQuestionnaireFragment(View view){

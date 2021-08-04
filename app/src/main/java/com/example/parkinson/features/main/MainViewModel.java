@@ -74,9 +74,9 @@ public class MainViewModel extends ViewModel {
      * Getting PatientDetails from firebase
      **/
     public void initData() {
-        isLoading.setValue(true);
+        isLoading.setValue(false);
         handleUserDetails(userRepository.getPatientDetails());
-        userRepository.getReportsList(setReportsListener());
+        //userRepository.getReportsList(setReportsListener());
     }
 
     private void handleUserDetails(Patient patientDetails) {
@@ -95,40 +95,40 @@ public class MainViewModel extends ViewModel {
     }
 
 
-    private ChildEventListener setReportsListener() {
-        return new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.exists()) {
-                    Report report = snapshot.getValue(Report.class);
-                    reports.add(report);
-                    reportsData.postValue(reports);
-                }
-                isLoading.setValue(false);
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                isLoading.setValue(false);
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-    }
+//    private ChildEventListener setReportsListener() {
+//        return new ChildEventListener() {
+//
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                if (snapshot.exists()) {
+//                    Report report = snapshot.getValue(Report.class);
+//                    reports.add(report);
+//                    reportsData.postValue(reports);
+//                }
+//                isLoading.setValue(false);
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                isLoading.setValue(false);
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        };
+//    }
 
     /**
      * Logging out of current user and back to on boarding activity
