@@ -75,8 +75,8 @@ final public class UserRepository {
     /**
      * Get answered questionnaire and update server
      */
-    public void postQuestionnaire(Questionnaire questionnaire) {
-        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).setValue(questionnaire);
+    public void postQuestionnaire(Questionnaire questionnaire,String index) {
+        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).child(index).setValue(questionnaire);
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("hasUnansweredQuestionnaire").setValue(false);
     }
 

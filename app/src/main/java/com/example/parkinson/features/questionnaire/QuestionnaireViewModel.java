@@ -76,6 +76,7 @@ public class QuestionnaireViewModel extends ViewModel {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     List<Question> questionList = new ArrayList<>();
+                    String name = "";
                         for (DataSnapshot questionnaire : dataSnapshot.child(index).child("questionList").getChildren()) {
 
                             Question question = questionnaire.getValue(Question.class);
@@ -92,7 +93,16 @@ public class QuestionnaireViewModel extends ViewModel {
                             questionList.add(question);
                         }
 
-                    questionnaire = new Questionnaire(questionList, Calendar.getInstance().getTime());
+
+                        for (DataSnapshot questionnaire : dataSnapshot.getChildren())
+                        {
+                        Questionnaire questionnaire1 = questionnaire.getValue(Questionnaire.class);
+                        name = questionnaire1.getQuestionnaireName();
+
+
+                        }
+
+                    questionnaire = new Questionnaire(questionList, Calendar.getInstance().getTime(),name);
                     questionnaireDataEvent.setValue(questionnaire);
                     isLoading.postValue(false);
                 }
@@ -105,7 +115,7 @@ public class QuestionnaireViewModel extends ViewModel {
         };
     }
 
-    public void onFinishClick() {
-        userRepository.postQuestionnaire(questionnaire);
+    public void onFinishClick(String index) {
+        userRepository.postQuestionnaire(questionnaire,index);
     }
 }

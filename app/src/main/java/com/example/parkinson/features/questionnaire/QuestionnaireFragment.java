@@ -33,6 +33,7 @@ public class QuestionnaireFragment extends Fragment {
     CardView backBtn;
     CardView finishBtn;
     private int pageNumber;
+    String index;
 
 
     public QuestionnaireFragment() {
@@ -58,7 +59,7 @@ public class QuestionnaireFragment extends Fragment {
 
         //getting Args from NavigationComponent
         Boolean isNewQuestionnaire = QuestionnaireFragmentArgs.fromBundle(getArguments()).getIsNewQuestionnaire();
-        String index = QuestionnaireFragmentArgs.fromBundle(getArguments()).getIndex();
+        index = QuestionnaireFragmentArgs.fromBundle(getArguments()).getIndex();
         questionnaireViewModel.init(isNewQuestionnaire, index);
     }
 
@@ -81,7 +82,7 @@ public class QuestionnaireFragment extends Fragment {
             onNextPressed();
         });
         finishBtn.setOnClickListener(v -> {
-            questionnaireViewModel.onFinishClick();
+            questionnaireViewModel.onFinishClick(index);
             getActivity().onBackPressed();
         });
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

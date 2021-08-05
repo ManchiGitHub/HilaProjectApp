@@ -12,9 +12,10 @@ public class Questionnaire {
     public Questionnaire() {
     }
 
-    public Questionnaire(List<Question> questionList, Date answeredAt) {
+    public Questionnaire(List<Question> questionList, Date answeredAt,String name) {
         this.questionList = questionList;
         this.answeredAt = answeredAt;
+        this.questionnaireName = name;
     }
 
     public List<Question> getQuestionList() {
