@@ -1,5 +1,7 @@
 package com.example.parkinson.features.questionnaire;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -28,6 +30,8 @@ public class QuestionnaireViewModel extends ViewModel {
     private Questionnaire questionnaire;
     MutableLiveData<Questionnaire> questionnaireDataEvent = new MutableLiveData<>();
     MutableLiveData<Boolean> isLoading  = new MutableLiveData<>();
+
+    String key;
 
     // @Inject tells Dagger how to create instances of MainViewModel
     @Inject
@@ -75,12 +79,15 @@ public class QuestionnaireViewModel extends ViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    Log.d("GGGG",dataSnapshot.getKey());
                     List<Question> questionList = new ArrayList<>();
                     String name = "";
+
                         for (DataSnapshot questionnaire : dataSnapshot.child(index).child("questionList").getChildren()) {
 
-                            Question question = questionnaire.getValue(Question.class);
 
+                            Question question = questionnaire.getValue(Question.class);
+                            name = dataSnapshot.child(index).child("questionnaireName").getValue(String.class);
                             if (question.getType().equals(EQuestionType.MultipleChoiceQuestion)) {
                                 question = questionnaire.getValue(MultipleChoiceQuestion.class);
 
@@ -94,15 +101,15 @@ public class QuestionnaireViewModel extends ViewModel {
                         }
 
 
-                        for (DataSnapshot questionnaire : dataSnapshot.getChildren())
-                        {
-                        Questionnaire questionnaire1 = questionnaire.getValue(Questionnaire.class);
-                        name = questionnaire1.getQuestionnaireName();
+//                        for (DataSnapshot questionnaire : dataSnapshot.child(ds.getKey()).getChildren())
+//                        {
+//                        Questionnaire questionnaire1 = questionnaire.getValue(Questionnaire.class);
+//                        name = questionnaire1.getQuestionnaireName();
+//
+//
+//                        }
 
-
-                        }
-
-                    questionnaire = new Questionnaire(questionList, Calendar.getInstance().getTime(),name);
+                    questionnaire = new Questionnaire(questionList,name);
                     questionnaireDataEvent.setValue(questionnaire);
                     isLoading.postValue(false);
                 }

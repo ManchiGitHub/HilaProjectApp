@@ -1,5 +1,7 @@
 package com.example.parkinson.features.questionnaire;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
@@ -12,6 +14,7 @@ import com.example.parkinson.model.question_models.Questionnaire;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,28 +111,44 @@ public class QuestionnaireListViewModel extends ViewModel {
 //        };
 //    }
 
+
     private ChildEventListener setQuestionnaireListener() {
         return new ChildEventListener() {
+
+            List<Questionnaire> list = new ArrayList<Questionnaire>();
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.exists()) {
-                    Questionnaire questionnaire = snapshot.getValue(Questionnaire.class);
-                    //medicationHashMap.put(med.getId(), med);
-                    List<Questionnaire> list = new ArrayList<Questionnaire>();
-                    list.add(questionnaire);
-                    myMedicationData.setValue(list);
+
+
+
+                    //Log.d("GGGG",snapshot.getKey());
+
+
+                       // Log.d("GGGG",ds.getKey());
+
+                        Questionnaire questionnaire = snapshot.getValue(Questionnaire.class);
+                        //Log.d("GGGG",questionnaire.getQuestionnaireName());
+
+                        //medicationHashMap.put(med.getId(), med);
+                        list.add(questionnaire);
+                        myMedicationData.setValue(list);
 //                    updateFilteredCategory();
-                    isLoading.postValue(false);
+                        isLoading.postValue(false);
+
                 }
+                isLoading.postValue(false);
+
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Questionnaire questionnaire = new Questionnaire();
                 if (snapshot.exists()) {
-                    questionnaire = snapshot.getValue(Questionnaire.class);
-                    //medicationHashMap.put(med.getId(), med);
+                        questionnaire = snapshot.getValue(Questionnaire.class);
+                        //medicationHashMap.put(med.getId(), med);
+
                 }
                 List<Questionnaire> list = new ArrayList<Questionnaire>();
                 list.add(questionnaire);

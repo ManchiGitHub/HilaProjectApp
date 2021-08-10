@@ -6,15 +6,13 @@ import java.util.List;
 
 public class Questionnaire {
     private List<Question> questionList = new ArrayList<>();
-    private Date answeredAt;
     private String questionnaireName;
 
     public Questionnaire() {
     }
 
-    public Questionnaire(List<Question> questionList, Date answeredAt,String name) {
+    public Questionnaire(List<Question> questionList ,String name) {
         this.questionList = questionList;
-        this.answeredAt = answeredAt;
         this.questionnaireName = name;
     }
 
@@ -26,13 +24,6 @@ public class Questionnaire {
         this.questionList = questionList;
     }
 
-    public Date getAnsweredAt() {
-        return answeredAt;
-    }
-
-    public void setAnsweredAt(Date answeredAt) {
-        this.answeredAt = answeredAt;
-    }
 
     public String getQuestionnaireName() {
         return questionnaireName;

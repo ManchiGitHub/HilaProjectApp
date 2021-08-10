@@ -77,7 +77,7 @@ final public class UserRepository {
      */
     public void postQuestionnaire(Questionnaire questionnaire,String index) {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).child(index).setValue(questionnaire);
-        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("hasUnansweredQuestionnaire").setValue(false);
+       // userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("hasUnansweredQuestionnaire").setValue(false);
     }
 
     public void getMedicationList(ChildEventListener listener) {

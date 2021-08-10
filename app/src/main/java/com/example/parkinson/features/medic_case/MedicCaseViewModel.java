@@ -43,6 +43,7 @@ public class MedicCaseViewModel extends ViewModel {
     public void initMedicineData() {
         isLoading.postValue(true);
         userRepository.getMedicationList(setMyMedicationListener());
+        isLoading.postValue(false);
 //        dataRepository.getMedicineList(setMedicationCategoryListener());
     }
 //
