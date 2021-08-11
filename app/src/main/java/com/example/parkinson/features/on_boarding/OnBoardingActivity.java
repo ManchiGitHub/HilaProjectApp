@@ -5,6 +5,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
 import com.google.firebase.FirebaseApp;
@@ -24,6 +26,7 @@ public class OnBoardingActivity extends AppCompatActivity {
 //                .appComponent.onBoardingComponent().create();
 //        onBoardingComponent.inject(this);
 
+        Log.d("alih", "onCreate: on boarding");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_boarding);
 

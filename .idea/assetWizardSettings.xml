@@ -322,7 +322,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/Applications/Android%20Studio.app/Contents/plugins/android/lib/android.jar!/images/material/icons/materialicons/message/baseline_message_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/error_outline/baseline_error_outline_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -332,8 +332,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_baseline_message_24" />
-                            <entry key="sourceFile" value="$PROJECT_DIR$/C:\Users\tomer\Desktop\AndroidApps\HilaProject" />
+                            <entry key="outputName" value="ic_error_" />
+                            <entry key="sourceFile" value="F:\HilaApp\C:\Users\tomer\Desktop\AndroidApps\HilaProject" />
                           </map>
                         </option>
                       </PersistentState>

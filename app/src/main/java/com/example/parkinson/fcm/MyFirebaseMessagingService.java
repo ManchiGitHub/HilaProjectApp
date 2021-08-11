@@ -1,32 +1,27 @@
 package com.example.parkinson.fcm;
 
-import android.app.ActivityManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.navigation.NavDeepLinkBuilder;
 
+import com.example.ParkinsonApplication;
 import com.example.parkinson.R;
-import com.example.parkinson.data.UserRepository;
 import com.example.parkinson.features.main.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.messaging.FirebaseMessaging;
+import com.example.parkinson.features.splash.SplashActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -36,8 +31,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "FirebaseMessagingServce";
 
     private MessagingManager messagingManager;
-    String roomKey;
-    String contactName;
+//    String roomKey;
+//    String contactName;
 
     public MyFirebaseMessagingService() {
 
@@ -57,100 +52,154 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        String notificationTitle = null, notificationBody = null;
-
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            notificationTitle = remoteMessage.getNotification().getTitle();
-            notificationBody = remoteMessage.getNotification().getBody();
-
-            if(remoteMessage.getData().size() > 0)
-            {
-                Map<String, String> data = remoteMessage.getData();
-                roomKey = data.get("room_key");
-                contactName = data.get("contact_name");
-            }
-
+        // Message contains a data payload.
+        if (remoteMessage.getNotification() == null) {
+            sendMessageNotification(remoteMessage);
         }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
-        sendNotification(notificationTitle, notificationBody);
+        else {
+            // Message contains a notification payload.
+            String notificationTitle = remoteMessage.getNotification().getTitle();
+            String notificationBody = remoteMessage.getNotification().getBody();
+            sendAnnouncementNotification(notificationTitle, notificationBody);
+        }
     }
 
+    /**
+     * This function is triggered when an announcement type notification is received.
+     * This kind of notification is always displayed to the user, regardless of the app's current state.
+     * An empty intent is passed in the pending intent.
+     * @param notificationTitle The title given by the server.
+     * @param notificationBody The notification body given by the server.
+     */
+    private void sendAnnouncementNotification(String notificationTitle, String notificationBody) {
 
-    private void sendNotification(String notificationTitle, String notificationBody) {
-        NotificationCompat.Builder builder;
-        NotificationManager notificationManager;
+        final String NOTIFICATION_CHANNEL_ID = "announcement";
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        createNotificationChannel();
-        Intent intent = new Intent(this, MainActivity.class);
+        // Android versions Oreo and above require a notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = makeChannel(NOTIFICATION_CHANNEL_ID);
+            manager.createNotificationChannel(channel);
+        }
+
+        // Set a message ringtone
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        // empty intent
+        Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder =
+                createNotificationBuilder(NOTIFICATION_CHANNEL_ID, notificationTitle, notificationBody, pendingIntent, defaultSoundUri);
+
+        manager.notify(0, builder.build());
+    }
+
+    /**
+     * This function is triggered when a message type notification is received.
+     * This notification will contain a data payload sent by the server, with the following keys:<br><br>
+     * &nbsp {@code room_key - The relevant chat room.}<br> &nbsp {@code message - The message.}<br>
+     * &nbsp {@code title - The notification title.}<br> &nbsp {@code contact_name - The notification title.}<br>
+     * &nbsp {@code notif_type - The notification type.}<br><br> <b>Message notifications have data payloads only</b>.
+     * The extracted values from the payload can be obtained in the launched activity via the above keys.<br>
+     * Example of retrieving the values:<br><br>
+     * <pre>
+     * if (getIntent().getExtras() != null) {
+     *  for (String key : getIntent().getExtras().keySet()) {
+     *      // get all values here
+     *  }
+     * }</pre>
+     *
+     * @param remoteMessage The FCM message
+     */
+    private void sendMessageNotification(RemoteMessage remoteMessage) {
+
+        // Variables for the current push notification
+        final boolean isAppInBackground = ParkinsonApplication.IS_APP_IN_BACKGROUND;
+        final String NOTIFICATION_CHANNEL_ID = "private_message";
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Get the data payload.
+        Map<String, String> data = remoteMessage.getData();
+        String roomKey = data.get("room_key");
+        String message = data.get("message");
+        String title = data.get("title");
+
+        // Prepare data to be sent to the app.
+        // This data can be retrieved in the launched activity's intent extras.
         Bundle bundle = new Bundle();
         bundle.putString("room_key", roomKey);
-        bundle.putString("contact_name", contactName);
 
-        PendingIntent pendingIntent =  new NavDeepLinkBuilder(this)
-                .setComponentName(MainActivity.class)
-                     .setGraph(R.navigation.nav_main)
-                .setDestination(R.id.chatFragment)
-                .setArguments(bundle)
-                .createPendingIntent();
+        // Android versions Oreo and above require a notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-        Uri defaultSoundUri =
-                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            NotificationChannel channel = makeChannel(NOTIFICATION_CHANNEL_ID);
+            manager.createNotificationChannel(channel);
+        }
 
-        builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
-                .setSmallIcon(R.drawable.icon_medical)
-                .setContentTitle(notificationTitle)
-                .setContentText(notificationBody)
-                .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri);
+        // Set a message ringtone
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, builder.build());
+        // If the app is dead or simply in the background, this intent will be used
+        // to bring up the application via a click event on the notification window.
+        // This intent is initialized according to the current state of the application.
+        // If the app is not alive, the Splash activity is set to launch.
+        // Otherwise, the Main activity is set to launch.
+        Intent intent;
 
-
-//        if(checkApp())
-//        {
-//            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//            notificationManager.notify(0, builder.build());
+        intent = new Intent(getApplicationContext(), SplashActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        if (isAppDead) {
+//        }
+//        else {
+//            intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 //        }
 
-    }
+        intent.putExtras(bundle);
 
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "CHANNEL";
-            String description = "CHANNEL_DESC";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
-            channel.setDescription(description);
-            channel.enableVibration(true);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+        NotificationCompat.Builder builder =
+                createNotificationBuilder(NOTIFICATION_CHANNEL_ID, title, message, pendingIntent, defaultSoundUri);
+
+        // Message notifications should be shown only if the app isn't in the foreground.
+        if (isAppInBackground) {
+            manager.notify(1, builder.build());
         }
     }
 
+    private NotificationCompat.Builder createNotificationBuilder(String channelID, String title, String message, PendingIntent pendingIntent, Uri soundUri) {
 
-    public boolean checkApp() {
-        ActivityManager am = (ActivityManager) this
-                .getSystemService(ACTIVITY_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID);
+        builder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.icon_medical)
+                .setContentTitle(title)
+                .setContentIntent(pendingIntent)
+                .setSound(soundUri)
+                .setContentText(message);
 
-        // get the info from the currently running task
-        List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+        return builder;
+    }
 
-        ComponentName componentInfo = taskInfo.get(0).topActivity;
-        if (componentInfo.getPackageName().equalsIgnoreCase("com.example.parkinson")) {
-            return true;
-        } else {
-            return false;
-        }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private NotificationChannel makeChannel(String channelID) {
+
+        NotificationChannel channel = new NotificationChannel(channelID, "data notification", NotificationManager.IMPORTANCE_HIGH);
+        channel.setDescription("channel for data notifications");
+        channel.enableLights(true);
+        channel.setLightColor(Color.RED);
+        channel.enableVibration(true);
+        channel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+
+        return channel;
     }
 }

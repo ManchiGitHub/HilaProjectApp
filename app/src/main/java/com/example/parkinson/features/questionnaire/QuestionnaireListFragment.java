@@ -117,7 +117,9 @@ public class QuestionnaireListFragment extends Fragment {
             mainActivity.updateLoadingScreen(isLoading);
         });
         questionnaireListViewModel.myMedicationData.observe(getViewLifecycleOwner(), questionnaireList -> {
+
             adapter = new QuestionnaireListAdapter(questionnaireList);
+
             recyclerView.setAdapter(adapter);
             adapter.setListener(new QuestionnaireListAdapter.QuestionnaireListAdapterListener() {
                 @Override

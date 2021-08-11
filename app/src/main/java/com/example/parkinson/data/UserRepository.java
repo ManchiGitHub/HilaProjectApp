@@ -1,6 +1,8 @@
 package com.example.parkinson.data;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.parkinson.data.enums.EDataSourceData;
@@ -11,6 +13,8 @@ import com.example.parkinson.model.general_models.Report;
 import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -76,7 +80,21 @@ final public class UserRepository {
      * Get answered questionnaire and update server
      */
     public void postQuestionnaire(Questionnaire questionnaire,String index) {
-        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).child(index).setValue(questionnaire);
+        String uid = firebaseUser.getUid();
+        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).child(index).setValue(questionnaire).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Log.d("alih", "onComplete: success" + task.getResult());
+                }
+                else if (task.isCanceled()){
+                    Log.d("alih", "onComplete: cancelled" + task.getException().getMessage());
+                }
+                else if (!task.isComplete()){
+                    Log.d("alih", "onComplete: not completed" + task.getException().getMessage());
+                }
+            }
+        });
        // userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("hasUnansweredQuestionnaire").setValue(false);
     }
 

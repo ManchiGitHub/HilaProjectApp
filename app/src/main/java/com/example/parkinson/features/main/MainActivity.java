@@ -1,12 +1,17 @@
 package com.example.parkinson.features.main;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.example.ParkinsonApplication;
 import com.example.parkinson.R;
 import com.example.parkinson.common.LoadingScreen;
 import com.example.parkinson.features.medic_case.MedicFile;
@@ -37,10 +42,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        mainComponent = ((ParkinsonApplication) getApplicationContext()).appComponent.mainComponent().create();
-//        mainComponent.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getIntent().getExtras() != null) {
+            for (String key : getIntent().getExtras().keySet()) {
+                Object value = getIntent().getExtras().get(key);
+                Log.d("alih", "onCreate: main: key: " + key + " | value: " + value);
+            }
+        }
 
         readFiles();
 
@@ -166,5 +176,19 @@ public class MainActivity extends AppCompatActivity {
         saveFiles();
 
         // for testing
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("alih", "onStop: main activity");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("alih", "onDestroy: main activity");
+        ParkinsonApplication.IS_APP_DEAD = true;
+        ParkinsonApplication.IS_APP_IN_BACKGROUND = false;
     }
 }

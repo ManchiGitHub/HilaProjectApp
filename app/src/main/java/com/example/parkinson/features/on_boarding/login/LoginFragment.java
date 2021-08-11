@@ -25,6 +25,7 @@ import com.example.parkinson.features.on_boarding.OnBoardingViewModel;
 import com.example.parkinson.model.enums.EClinics;
 import com.example.parkinson.model.general_models.Time;
 import com.example.parkinson.model.user_models.Patient;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.sql.Date;
 import java.util.Objects;
@@ -40,8 +41,8 @@ public class LoginFragment extends Fragment {
 
     private OnBoardingViewModel onBoardingViewModel;
 
-    private EditText userName;
-    private EditText password;
+    private TextInputEditText userName;
+    private TextInputEditText password;
     private TextView login;
 
     public LoginFragment() {
