@@ -80,18 +80,20 @@ public class MainViewModel extends ViewModel {
     }
 
     private void handleUserDetails(Patient patientDetails) {
-        patientEvent.postValue(patientDetails);
-        List<String> messages = new ArrayList<>();
-        if (patientDetails.getHasUnansweredQuestionnaire()) {
-            messages.add("קיים שאלון חדש המחכה למענה");
+        if (patientDetails!=null){
+            patientEvent.postValue(patientDetails);
+            List<String> messages = new ArrayList<>();
+            if (patientDetails.getHasUnansweredQuestionnaire()) {
+                messages.add("קיים שאלון חדש המחכה למענה");
+            }
+            if (patientDetails.getNeedToUpdateMedicine()) {
+                messages.add("יש למלא רשימת תרופות");
+            }
+            if (!patientDetails.getNeedToUpdateMedicine() && !patientDetails.getHasUnansweredQuestionnaire()) {
+                messages.add("אין הודעות חדשות");
+            }
+            messagesData.postValue(messages);
         }
-        if (patientDetails.getNeedToUpdateMedicine()) {
-            messages.add("יש למלא רשימת תרופות");
-        }
-        if (!patientDetails.getNeedToUpdateMedicine() && !patientDetails.getHasUnansweredQuestionnaire()) {
-            messages.add("אין הודעות חדשות");
-        }
-        messagesData.postValue(messages);
     }
 
 

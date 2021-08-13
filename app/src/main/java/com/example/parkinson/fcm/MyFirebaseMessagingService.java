@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.navigation.NavDeepLinkBuilder;
 
 import com.example.ParkinsonApplication;
 import com.example.parkinson.R;
@@ -28,7 +29,7 @@ import javax.inject.Inject;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String TAG = "FirebaseMessagingServce";
+    private static final String TAG = "FirebaseMessagingService";
 
     private MessagingManager messagingManager;
 //    String roomKey;
@@ -52,12 +53,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        // Message contains a data payload.
+        // remoteMessage contains a data payload.
+        // This is a chat message.
         if (remoteMessage.getNotification() == null) {
             sendMessageNotification(remoteMessage);
         }
         else {
-            // Message contains a notification payload.
+            // remoteMessage contains a notification payload.
+            // This is an announcement.
             String notificationTitle = remoteMessage.getNotification().getTitle();
             String notificationBody = remoteMessage.getNotification().getBody();
             sendAnnouncementNotification(notificationTitle, notificationBody);
@@ -68,8 +71,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * This function is triggered when an announcement type notification is received.
      * This kind of notification is always displayed to the user, regardless of the app's current state.
      * An empty intent is passed in the pending intent.
+     *
      * @param notificationTitle The title given by the server.
-     * @param notificationBody The notification body given by the server.
+     * @param notificationBody  The notification body given by the server.
      */
     private void sendAnnouncementNotification(String notificationTitle, String notificationBody) {
 
@@ -86,7 +90,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Set a message ringtone
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        // empty intent
+        // empty intent. In this case, the fcm notification handles the notification click
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
@@ -103,7 +107,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * This function is triggered when a message type notification is received.
      * This notification will contain a data payload sent by the server, with the following keys:<br><br>
      * &nbsp {@code room_key - The relevant chat room.}<br> &nbsp {@code message - The message.}<br>
-     * &nbsp {@code title - The notification title.}<br> &nbsp {@code contact_name - The notification title.}<br>
+     * &nbsp {@code title - The notification title.}<br> &nbsp {@code contact_name - The contact's name.}<br>
      * &nbsp {@code notif_type - The notification type.}<br><br> <b>Message notifications have data payloads only</b>.
      * The extracted values from the payload can be obtained in the launched activity via the above keys.<br>
      * Example of retrieving the values:<br><br>
@@ -119,21 +123,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void sendMessageNotification(RemoteMessage remoteMessage) {
 
         // Variables for the current push notification
-        final boolean isAppInBackground = ParkinsonApplication.IS_APP_IN_BACKGROUND;
+        final boolean isAppInBackgroundOrDead = ParkinsonApplication.IS_APP_IN_BACKGROUND;
         final String NOTIFICATION_CHANNEL_ID = "private_message";
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Get the data payload.
         Map<String, String> data = remoteMessage.getData();
         String roomKey = data.get("room_key");
         String message = data.get("message");
         String title = data.get("title");
-
-        // Prepare data to be sent to the app.
-        // This data can be retrieved in the launched activity's intent extras.
-        Bundle bundle = new Bundle();
-        bundle.putString("room_key", roomKey);
+        String contactName = data.get("contact_name");
 
         // Android versions Oreo and above require a notification channel
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -145,32 +144,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Set a message ringtone
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        // If the app is dead or simply in the background, this intent will be used
-        // to bring up the application via a click event on the notification window.
-        // This intent is initialized according to the current state of the application.
-        // If the app is not alive, the Splash activity is set to launch.
-        // Otherwise, the Main activity is set to launch.
-        Intent intent;
+        // Prepare data to be sent to the app.
+        // This data can also be retrieved in the launched activity's intent extras.
+        Bundle bundle = new Bundle();
+        bundle.putString("room_key", roomKey);
+        bundle.putString("contact_name", contactName);
 
-        intent = new Intent(getApplicationContext(), SplashActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        if (isAppDead) {
-//        }
-//        else {
-//            intent = new Intent(getApplicationContext(), MainActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        }
-
-        intent.putExtras(bundle);
-
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // We use this pendingIntent to open up the relevant chat room
+        PendingIntent pendingIntent = new NavDeepLinkBuilder(this)
+                .setComponentName(MainActivity.class)
+                .setGraph(R.navigation.nav_main)
+                .setDestination(R.id.chatFragment)
+                .setArguments(bundle)
+                .createPendingIntent();
 
         NotificationCompat.Builder builder =
                 createNotificationBuilder(NOTIFICATION_CHANNEL_ID, title, message, pendingIntent, defaultSoundUri);
 
-        // Message notifications should be shown only if the app isn't in the foreground.
-        if (isAppInBackground) {
+        // Message type notifications should be shown only if the app isn't in the foreground.
+        //TODO: consider checking if app is in the background before setting up the message notification
+        if (isAppInBackgroundOrDead) {
             manager.notify(1, builder.build());
         }
     }

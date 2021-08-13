@@ -35,7 +35,6 @@ public class SplashActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
                 Object value = getIntent().getExtras().get(key);
-                roomKey = (String) getIntent().getExtras().get(key);
                 Log.d("alih", "onCreate: splash: key: " + key + " | value: " + value);
             }
         }
