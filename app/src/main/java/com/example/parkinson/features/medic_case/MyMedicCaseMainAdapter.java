@@ -50,6 +50,7 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
         Glide.with(holder.itemView).asBitmap().load(uriString).into(holder.imageView);
 
         holder.timeStamp.setText(files.get(position).getTimeStamp());
+        holder.title.setText(files.get(position).getTitle());
 
 
 
@@ -85,12 +86,14 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
     {
         ImageView imageView;
         TextView timeStamp;
+        TextView title;
 
         public MyMedidCaseViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.file_pic);
             timeStamp = itemView.findViewById(R.id.file_added_time_stamp);
+            title = itemView.findViewById(R.id.file_added_title);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_bg__dialog_shape"
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="13dp">
+
+
+
+    <EditText
+        android:id="@+id/dialog_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:hint="הכנס שם למסמך"
+        android:background="@color/transparent"
+        android:padding="5dp"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/profile_dialog_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_body"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:paddingVertical="10dp"
+        android:textAllCaps="false"
+        android:text="אישור"
+        android:textColor="@color/black"
+        app:backgroundTint="@color/colorPrimary"
+        app:cornerRadius="40dp" />
+
+</RelativeLayout>

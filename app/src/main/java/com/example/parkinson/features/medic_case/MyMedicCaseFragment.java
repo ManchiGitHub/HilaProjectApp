@@ -20,9 +20,12 @@ import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -87,6 +90,9 @@ public class MyMedicCaseFragment extends Fragment {
     //Dialogs
     private AlertDialog alertDialog;
 
+    private MedicFile medicFile = new MedicFile();
+    private MedicFile medicFile1 = new MedicFile();
+
     public MyMedicCaseFragment() {
         super(R.layout.fragment_medic_case);
     }
@@ -134,6 +140,8 @@ public class MyMedicCaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 buildSheetDialog();
+
+
             }
         });
 
@@ -226,10 +234,11 @@ public class MyMedicCaseFragment extends Fragment {
                         if (bitmap1 != null) {
                             Calendar calendar = Calendar.getInstance(Locale.getDefault());
                             String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
-                            MedicFile medicFile = new MedicFile();
-                            medicFile.setFilePath(fileUri.toString());
-                            medicFile.setTimeStamp(chatTime);
-                            files.add(medicFile);
+                            medicFile1 = new MedicFile();
+                            medicFile1.setFilePath(fileUri.toString());
+                            medicFile1.setTimeStamp(chatTime);
+                            fileUri = null;
+                            createCustomDialog(medicFile1);
                         }
                     }
                 });
@@ -253,10 +262,11 @@ public class MyMedicCaseFragment extends Fragment {
                             if (bitmap2 != null) {
                                 Calendar calendar = Calendar.getInstance(Locale.getDefault());
                                 String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
-                                MedicFile medicFile = new MedicFile();
+                                medicFile = new MedicFile();
                                 medicFile.setFilePath(fileUri.toString());
                                 medicFile.setTimeStamp(chatTime);
-                                files.add(medicFile);
+                                fileUri = null;
+                                createCustomDialog(medicFile);
                             }
 
                         }
@@ -374,7 +384,50 @@ public class MyMedicCaseFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //Collections.reverse(files);
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
+    }
+
+    private void createCustomDialog(MedicFile medicFiler) {
+
+        final AlertDialog alertDialog;
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_text_layout, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        alertDialog = builder.setView(dialogView).show();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+
+
+        //TextView titleTv = dialogView.findViewById(R.id.profile_dialog_title);
+        EditText bodyTv = dialogView.findViewById(R.id.dialog_body);
+        //ImageView iconIv = dialogView.findViewById(R.id.profile_dialog_icon);
+        final Button okBtn = dialogView.findViewById(R.id.profile_dialog_btn);
+
+
+
+       // titleTv.setText(title);
+        //bodyTv.setText(body);
+//        iconIv.setImageResource(icon);
+//        iconIv.animate().scaleX(1f).scaleY(1f).setDuration(250).withEndAction(new Runnable() {
+//            @Override
+//            public void run() {
+//                okBtn.animate().scaleX(1f).scaleY(1f).setDuration(200).start();
+//            }
+//        }).start();
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                medicFiler.setTitle(bodyTv.getText().toString());
+                if(!medicFiler.getTitle().isEmpty()) {
+                    files.add(medicFiler);
+                    alertDialog.dismiss();
+                }
+
+                //adapter.notifyDataSetChanged();
+            }
+        });
     }
 
 }

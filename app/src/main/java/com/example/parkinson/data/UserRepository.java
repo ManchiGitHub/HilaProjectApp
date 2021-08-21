@@ -95,7 +95,7 @@ final public class UserRepository {
                 }
             }
         });
-       // userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("hasUnansweredQuestionnaire").setValue(false);
+       // userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).child(index).child("date_answered").setValue(System.currentTimeMillis());
     }
 
     public void getMedicationList(ChildEventListener listener) {

@@ -35,6 +35,7 @@ public class MedicineBinderMedicine extends ItemBinder<Medicine, MedicineBinderM
     @Override
     public void bindViewHolder(ViewHolder holder, Medicine item) {
         holder.name.setText(item.getName());
+        holder.dosage.setText("מדידה אחרונה:  " + item.getValue() );
         holder.itemView.setOnClickListener(v -> {
             listener.onMedicineClick(item);
         });

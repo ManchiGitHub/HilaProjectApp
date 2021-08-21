@@ -32,13 +32,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/file_added_title"
+                android:layout_height="wrap_content"
+                android:text="שם המסמך"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/file_added_time_stamp" />
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/file_added_time_stamp"
                 android:layout_height="wrap_content"
                 android:text="25/07/21"
-                android:textSize="18sp"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

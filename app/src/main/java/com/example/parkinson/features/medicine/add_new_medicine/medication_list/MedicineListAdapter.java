@@ -53,7 +53,8 @@ public class MedicineListAdapter extends RecyclerView.Adapter<MedicineListAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Medicine medicine = category.getMedicineList().get(position);
-        holder.name.setText(medicine.getName());
+        //holder.name.setText(medicine.getName());
+        //holder.dosage.setText(medicine.getName());
         holder.itemView.setOnClickListener(v -> {
             listener.onMedicineClick(medicine);
         });

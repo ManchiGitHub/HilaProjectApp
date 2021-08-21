@@ -82,12 +82,14 @@ public class QuestionnaireViewModel extends ViewModel {
                     Log.d("GGGG",dataSnapshot.getKey());
                     List<Question> questionList = new ArrayList<>();
                     String name = "";
+                    long date_sent = 0;
 
                         for (DataSnapshot questionnaire : dataSnapshot.child(index).child("questionList").getChildren()) {
 
 
                             Question question = questionnaire.getValue(Question.class);
                             name = dataSnapshot.child(index).child("questionnaireName").getValue(String.class);
+                            date_sent = dataSnapshot.child(index).child("date_sent").getValue(long.class);
                             if (question.getType().equals(EQuestionType.MultipleChoiceQuestion)) {
                                 question = questionnaire.getValue(MultipleChoiceQuestion.class);
 
@@ -109,7 +111,7 @@ public class QuestionnaireViewModel extends ViewModel {
 //
 //                        }
 
-                    questionnaire = new Questionnaire(questionList,name);
+                    questionnaire = new Questionnaire(questionList,name,date_sent,System.currentTimeMillis());
                     questionnaireDataEvent.setValue(questionnaire);
                     isLoading.postValue(false);
                 }

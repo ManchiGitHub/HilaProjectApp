@@ -50,7 +50,7 @@ public class MedicineCategoryAdapter extends RecyclerView.Adapter<MedicineCatego
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         MedicineCategory category = categories.get(position);
-        holder.categoryName.setText(category.getCategoryName());
+        holder.categoryName.setText(category.getCategoryName() + "!!!");
         holder.itemView.setOnClickListener(v -> {
             listener.onCategoryClick(position);
         });

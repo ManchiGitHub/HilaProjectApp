@@ -93,6 +93,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="imagePath" value="$USER_HOME$/Downloads/logo.png" />
+                                                <entry key="scalingPercent" value="79" />
                                                 <entry key="trimmed" value="true" />
                                               </map>
                                             </option>

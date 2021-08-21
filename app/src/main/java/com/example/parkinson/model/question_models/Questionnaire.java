@@ -7,14 +7,25 @@ import java.util.List;
 public class Questionnaire {
     private List<Question> questionList = new ArrayList<>();
     private String questionnaireName;
+    private long date_sent;
+    private long date_answered;
 
     public Questionnaire() {
+    }
+
+    public Questionnaire(List<Question> questionList ,String name, long date_sent, long date_answered) {
+        this.questionList = questionList;
+        this.questionnaireName = name;
+        this.date_sent = date_sent;
+        this.date_answered = date_answered;
     }
 
     public Questionnaire(List<Question> questionList ,String name) {
         this.questionList = questionList;
         this.questionnaireName = name;
     }
+
+
 
     public List<Question> getQuestionList() {
         return questionList;
@@ -31,5 +42,21 @@ public class Questionnaire {
 
     public void setQuestionnaireName(String questionnaireName) {
         this.questionnaireName = questionnaireName;
+    }
+
+    public long getDate_sent() {
+        return date_sent;
+    }
+
+    public void setDate_sent(long date_sent) {
+        this.date_sent = date_sent;
+    }
+
+    public long getDate_answered() {
+        return date_answered;
+    }
+
+    public void setDate_answered(long date_answered) {
+        this.date_answered = date_answered;
     }
 }
