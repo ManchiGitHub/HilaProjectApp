@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.parkinson.R;
 
 import java.util.List;
@@ -33,12 +35,10 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
 
 
         String uriString = files.get(position).getFilePath().toString();
-        Glide.with(holder.itemView).asBitmap().load(uriString).into(holder.imageView);
+        //Glide.with(holder.itemView).asBitmap().load(uriString).into(holder.imageView);
+        Glide.with(holder.itemView).asBitmap().load(uriString).circleCrop().into(holder.imageView);
 
-//        Glide.with(holder.itemView).asBitmap()
-//                .load(uriString)
-//                .transform(new CenterCrop(),new RoundedCorners(1))
-//                .into(holder.imageView);
+
 
 
         holder.timeStamp.setText(files.get(position).getTimeStamp());
