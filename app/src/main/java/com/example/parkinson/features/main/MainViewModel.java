@@ -1,27 +1,13 @@
 package com.example.parkinson.features.main;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.NavDirections;
 
 import com.example.parkinson.data.DataRepository;
 import com.example.parkinson.data.UserRepository;
-import com.example.parkinson.model.enums.EQuestionType;
-import com.example.parkinson.model.general_models.Medicine;
-import com.example.parkinson.model.general_models.MedicineCategory;
 import com.example.parkinson.model.general_models.Report;
-import com.example.parkinson.model.question_models.MultipleChoiceQuestion;
-import com.example.parkinson.model.question_models.OpenQuestion;
-import com.example.parkinson.model.question_models.Question;
-import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.core.Repo;
 
 import java.util.ArrayList;
 import java.util.List;

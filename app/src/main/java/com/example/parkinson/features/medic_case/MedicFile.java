@@ -7,6 +7,7 @@ public class MedicFile implements Serializable {
     private String filePath;
     private String timeStamp;
     private String title;
+    private String notes;
 
     public MedicFile(String filePath, String timeStamp) {
         this.filePath = filePath;
@@ -38,5 +39,13 @@ public class MedicFile implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

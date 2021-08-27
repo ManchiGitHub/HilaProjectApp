@@ -1,8 +1,5 @@
 package com.example.parkinson.features.medic_case;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,19 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.parkinson.R;
-import com.example.parkinson.features.medicine.binder.MedicineBinderEmptyList;
-import com.example.parkinson.features.medicine.binder.MedicineBinderHeader;
-import com.example.parkinson.features.medicine.binder.MedicineBinderMedicine;
-import com.example.parkinson.features.medicine.models.CategoryEmpty;
-import com.example.parkinson.model.general_models.Medicine;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-
-import mva2.adapter.ItemSection;
-import mva2.adapter.ListSection;
-import mva2.adapter.MultiViewAdapter;
 
 public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMainAdapter.MyMedidCaseViewHolder> {
 
@@ -48,6 +34,12 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
 
         String uriString = files.get(position).getFilePath().toString();
         Glide.with(holder.itemView).asBitmap().load(uriString).into(holder.imageView);
+
+//        Glide.with(holder.itemView).asBitmap()
+//                .load(uriString)
+//                .transform(new CenterCrop(),new RoundedCorners(1))
+//                .into(holder.imageView);
+
 
         holder.timeStamp.setText(files.get(position).getTimeStamp());
         holder.title.setText(files.get(position).getTitle());

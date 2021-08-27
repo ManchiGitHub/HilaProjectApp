@@ -4,18 +4,12 @@ package com.example.parkinson.features.main.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkinson.R;
-import com.example.parkinson.model.general_models.Medicine;
-import com.example.parkinson.model.general_models.MedicineCategory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

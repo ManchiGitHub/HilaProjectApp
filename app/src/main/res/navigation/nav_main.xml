@@ -24,7 +24,7 @@
 
         <action
             android:id="@+id/action_mainFragment_to_myMedicinesFragment"
-            app:destination="@id/myMedicinesFragment"
+            app:destination="@id/myMetricsFragment"
             app:enterAnim="@anim/slide_right_enter"
             app:exitAnim="@anim/slide_right_exit"
             app:popEnterAnim="@anim/slide_left_enter"
@@ -71,8 +71,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/myMedicinesFragment"
-        android:name="com.example.parkinson.features.medicine.MyMedicinesFragment"
+        android:id="@+id/myMetricsFragment"
+        android:name="com.example.parkinson.features.metrics.MyMetricsFragment"
         android:label="MyMedicinesFragment"
         tools:layout="@layout/fragment_my_medicines">
         <action
@@ -105,7 +105,7 @@
 
     <fragment
         android:id="@+id/MedicineCategoryFragment"
-        android:name="com.example.parkinson.features.medicine.add_new_medicine.medication_categories.MedicineCategoryFragment"
+        android:name="com.example.parkinson.features.medicines.add_new_medicine.medication_categories.MedicineCategoryFragment"
         android:label="MedicineCategoryFragment"
         tools:layout="@layout/fragment_medicine_category_list">
         <action
@@ -119,7 +119,7 @@
 
     <fragment
         android:id="@+id/MedicineListFragment"
-        android:name="com.example.parkinson.features.medicine.add_new_medicine.medication_list.MedicineListFragment"
+        android:name="com.example.parkinson.features.medicines.add_new_medicine.medication_list.MedicineListFragment"
         android:label="MedicineListFragment"
         tools:layout="@layout/fragment_medicine_list">
         <action
@@ -137,7 +137,7 @@
 
     <fragment
         android:id="@+id/singleMedicineFrag"
-        android:name="com.example.parkinson.features.medicine.add_new_medicine.single_medicine.SingleMedicineFragment"
+        android:name="com.example.parkinson.features.metrics.add_new_medicine.single_metric.SingleMetricFragment"
         android:label="SingleMedicineFrag"
         tools:layout="@layout/fragment_single_medicine">
         <argument

@@ -3,6 +3,8 @@ package com.example.parkinson.model.general_models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.example.parkinson.features.metrics.add_new_medicine.single_metric.SingleMetric;
+
 import java.util.List;
 
 public class Medicine implements Parcelable {
@@ -11,14 +13,20 @@ public class Medicine implements Parcelable {
 
     private String name;
     private String value;
-    List<Time> hoursArr;
+    List<SingleMetric> valueList;
 
     public Medicine() {
     }
 
-    public Medicine(String id,String name) {
+    public Medicine(String id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Medicine(String id, String name, List<SingleMetric> valueList) {
+        this.id = id;
+        this.name = name;
+        this.valueList = valueList;
     }
 
     protected Medicine(Parcel in) {
@@ -75,13 +83,13 @@ public class Medicine implements Parcelable {
         this.value = value;
     }
 
-    public List<Time> getHoursArr() {
-        return hoursArr;
-    }
-
-    public void setHoursArr(List<Time> hoursArr) {
-        this.hoursArr = hoursArr;
-    }
+//    public List<Time> getHoursArr() {
+//        return hoursArr;
+//    }
+//
+//    public void setHoursArr(List<Time> hoursArr) {
+//        this.hoursArr = hoursArr;
+//    }
 
 //    public String dosageString() {
 //        if (value == 0.25) {
@@ -104,4 +112,13 @@ public class Medicine implements Parcelable {
 //        return "";
 //    }
 
+
+
+    public List<SingleMetric> getValueList() {
+        return valueList;
+    }
+
+    public void setValueList(List<SingleMetric> valueList) {
+        this.valueList = valueList;
+    }
 }

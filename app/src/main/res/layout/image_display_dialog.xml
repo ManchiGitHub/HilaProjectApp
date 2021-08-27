@@ -1,53 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_bg__dialog_shape">
 
-    <ImageButton
-        android:id="@+id/img_dialog_back_btn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="12dp"
-        android:background="@null"
-        android:elevation="2dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_close_black_24dp"
-        android:tint="@color/black"/>
 
-    <ProgressBar
-        android:id="@+id/img_loader_bar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        android:layout_marginVertical="20dp"
-        android:indeterminateTint="@color/colorPrimary" />
-
-    <com.jsibbold.zoomage.ZoomageView
-        android:id="@+id/img_display"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/star_icon"
-        app:zoomage_restrictBounds="false"
-        app:zoomage_animateOnReset="true"
-        android:elevation="1dp"
-        app:zoomage_autoResetMode="UNDER"
-        app:zoomage_autoCenter="true"
-        app:zoomage_zoomable="true"
-        android:visibility="invisible"
-        app:zoomage_translatable="true"
-        app:zoomage_minScale="0.6"
-        app:zoomage_maxScale="8"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/text_layout">
 
-<!--    <ImageView-->
-<!--        android:id="@+id/img_display"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:src="@drawable/star_icon"-->
-<!--        android:visibility="invisible" />-->
+        <ImageButton
+            android:id="@+id/img_dialog_back_btn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:elevation="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_close_black_24dp"
+            android:tint="@color/black"/>
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_dialog_back_btn"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:textSize="20sp"
+            android:id="@+id/title_tv"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="שם המסמך:"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/title_tv"
+            android:layout_centerVertical="true"
+            android:layout_below="@id/img_dialog_back_btn"
+            android:id="@+id/title_name"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="6dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="בדיקות דם"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_layout"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/text_layout">
+
+
+
+
+        <!--    <ProgressBar-->
+        <!--        android:id="@+id/img_loader_bar"-->
+        <!--        android:layout_width="100dp"-->
+        <!--        android:layout_height="100dp"-->
+        <!--        android:layout_centerInParent="true"-->
+        <!--        android:layout_marginVertical="20dp"-->
+        <!--        android:indeterminateTint="@color/colorPrimary" />-->
+
+
+        <com.jsibbold.zoomage.ZoomageView
+            android:id="@+id/img_display"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:src="@drawable/star_icon"
+            app:zoomage_restrictBounds="false"
+            app:zoomage_animateOnReset="true"
+            android:elevation="1dp"
+            app:zoomage_autoResetMode="UNDER"
+            app:zoomage_autoCenter="true"
+            app:zoomage_zoomable="true"
+            android:visibility="invisible"
+            app:zoomage_translatable="true"
+            app:zoomage_minScale="0.6"
+            app:zoomage_maxScale="8"
+            />
+
+        <!--    <ImageView-->
+        <!--        android:id="@+id/img_display"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="match_parent"-->
+        <!--        android:src="@drawable/star_icon"-->
+        <!--        android:visibility="invisible" />-->
+
+
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/image_layout"
+        android:layout_marginTop="5dp"
+        android:id="@+id/notes_layout">
+
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:visibility="invisible"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/notes_title"
+            android:layout_marginBottom="50dp"
+            android:text="הערות:"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/notes_title"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"
+            android:visibility="invisible"
+            android:textSize="20sp"
+            android:id="@+id/notes_name"
+            android:textStyle="bold"
+            android:layout_marginBottom="50dp"
+            android:text="לקחת כל יום"/>
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

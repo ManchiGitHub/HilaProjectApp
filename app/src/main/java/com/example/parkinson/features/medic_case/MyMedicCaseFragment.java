@@ -52,6 +52,8 @@ import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -132,7 +134,7 @@ public class MyMedicCaseFragment extends Fragment {
             @Override
             public void onFileClicked(int position, View view) {
 
-                loadImageDialog(files.get(position).getFilePath());
+                loadImageDialog(files.get(position).getFilePath(),files.get(position).getTitle(),files.get(position).getNotes());
             }
         });
 
@@ -333,39 +335,50 @@ public class MyMedicCaseFragment extends Fragment {
     ImageView imageView;
     ImageButton backBtn;
 
-    private void loadImageDialog(String url) {
+    private void loadImageDialog(String url,String name, String notes) {
 
         View dialogView = getLayoutInflater().inflate(R.layout.image_display_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         alertDialog = builder.setView(dialogView).show();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        progressBar = dialogView.findViewById(R.id.img_loader_bar);
+        //progressBar = dialogView.findViewById(R.id.img_loader_bar);
         ImageView imageView = dialogView.findViewById(R.id.img_display);
         ImageButton backBtn = dialogView.findViewById(R.id.img_dialog_back_btn);
+        TextView nameTv = dialogView.findViewById(R.id.title_name);
+        TextView noteTv = dialogView.findViewById(R.id.notes_name);
+        TextView noteTitleTv = dialogView.findViewById(R.id.notes_title);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.GONE);
+                //progressBar.setVisibility(View.GONE);
                 alertDialog.dismiss(); }
         });
 
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
 
         try {
             Glide.with(dialogView).load(url).listener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                     //Snackbar.make(getActivity().findViewById(R.id.coordinator_layout), R.string.failed_upload_image, Snackbar.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
+                    //progressBar.setVisibility(View.GONE);
                     return false;
                 }
 
                 @Override
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                    progressBar.setVisibility(View.GONE);
+                    //progressBar.setVisibility(View.GONE);
                     imageView.setVisibility(View.VISIBLE);
+                    nameTv.setText(name);
+                    if(!notes.isEmpty())
+                    {
+                        noteTitleTv.setVisibility(View.VISIBLE);
+                        noteTv.setVisibility(View.VISIBLE);
+                        noteTv.setText(notes);
+                    }
+
                     return false;
                 }
             }).into(imageView);
@@ -400,6 +413,7 @@ public class MyMedicCaseFragment extends Fragment {
 
         //TextView titleTv = dialogView.findViewById(R.id.profile_dialog_title);
         EditText bodyTv = dialogView.findViewById(R.id.dialog_body);
+        EditText notesTv = dialogView.findViewById(R.id.notes_body);
         //ImageView iconIv = dialogView.findViewById(R.id.profile_dialog_icon);
         final Button okBtn = dialogView.findViewById(R.id.profile_dialog_btn);
 
@@ -420,6 +434,7 @@ public class MyMedicCaseFragment extends Fragment {
             public void onClick(View v) {
 
                 medicFiler.setTitle(bodyTv.getText().toString());
+                medicFiler.setNotes(notesTv.getText().toString());
                 if(!medicFiler.getTitle().isEmpty()) {
                     files.add(medicFiler);
                     alertDialog.dismiss();

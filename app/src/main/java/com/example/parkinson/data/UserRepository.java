@@ -13,7 +13,6 @@ import com.example.parkinson.model.general_models.Report;
 import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
