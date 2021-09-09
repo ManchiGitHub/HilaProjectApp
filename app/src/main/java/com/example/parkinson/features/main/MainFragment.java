@@ -2,6 +2,7 @@ package com.example.parkinson.features.main;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.service.autofill.Dataset;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +16,23 @@ import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.parkinson.R;
+import com.example.parkinson.data.UserRepository;
+import com.example.parkinson.data.enums.EDataSourceUser;
 import com.example.parkinson.features.main.adapters.MessagesListAdapter;
+import com.example.parkinson.model.question_models.Question;
+import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
 
 public class MainFragment extends Fragment {
 
@@ -29,6 +45,8 @@ public class MainFragment extends Fragment {
 
     ImageView medicineBadge;
     ImageView questionnaireBadge;
+
+    UserRepository userRepository;
 
 
     RecyclerView messagesList;
@@ -54,6 +72,7 @@ public class MainFragment extends Fragment {
         initViews(view);
         initUi(view);
         initObservers();
+        //handleData();
 
     }
 
@@ -61,8 +80,8 @@ public class MainFragment extends Fragment {
         medicineBtn = view.findViewById(R.id.mainFragMedicineBtn);
         questionnaireBtn = view.findViewById(R.id.mainFragQuestionnaireBtn);
         medicCaseBtn = view.findViewById(R.id.mainFragMedicCaseBtn);
-//        medicineBadge = view.findViewById(R.id.mainFragMedicineBadge);
-//        questionnaireBadge = view.findViewById(R.id.mainFragQuestionnaireBadge);
+        medicineBadge = view.findViewById(R.id.mainFragMedicineBadge);
+        questionnaireBadge = view.findViewById(R.id.mainFragQuestionnaireBadge);
 
         //messagesList= view.findViewById(R.id.recyclerMessages);
 //        reportsList= view.findViewById(R.id.recyclerReports);
@@ -96,7 +115,26 @@ public class MainFragment extends Fragment {
 
     private void initObservers() {
         mainViewModel.patientEvent.observe(getViewLifecycleOwner(), patient -> {
+            //patient.getHasUnansweredQuestionnaire();
             //handlePatientData(patient);
+        });
+        mainViewModel.questionnaireEvent.observe(getViewLifecycleOwner(),questionnaire ->
+        {
+
+            for(Questionnaire qs : questionnaire)
+            {
+
+
+                if(qs.getDate_answered() == null) {
+                    questionnaireBadge.setVisibility(View.VISIBLE);
+                }
+
+//                if (qs.isAnswered() == false)
+//                {
+//                    System.out.println(qs.getQuestionnaireName() + "LL");
+//                    questionnaireBadge.setVisibility(View.VISIBLE);
+//                }
+            }
         });
 //        mainViewModel.reportsData.observe(getViewLifecycleOwner(),data->{
 //            ReportsListAdapter adapter = new ReportsListAdapter(data);
@@ -123,6 +161,68 @@ public class MainFragment extends Fragment {
 //            medicineBadge.setVisibility(View.INVISIBLE);
 //        }
 //    }
+
+    private void handleData()
+    {
+
+
+
+//        ds.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                for (DataSnapshot ds : snapshot.getChildren())
+//                    System.out.println(ds.getKey());
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+
+
+//        FirebaseDatabase.getInstance().getReference().child(FirebaseAuth.getInstance().getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//
+//                //System.out.println(snapshot.getChildren());
+//
+//                //Questionnaire questionnaire = snapshot.child("1").getValue(Questionnaire.class);
+//
+//                //System.out.println(snapshot.child("0").getKey());
+//                //System.out.println(questionnaire.getQuestionnaireName());
+//
+//                //System.out.println(snapshot.child("1").getValue() + "!!!!!!!!!!!!!!!!!!");
+//
+//                for(DataSnapshot ds : snapshot.getChildren())
+//                {
+//
+//
+//                    //System.out.println(ds.getValue() + "!!!!!!!!!!!!!!!!!");
+//
+//
+//                    //Questionnaire questionnaire = ds.getValue(Questionnaire.class);
+//
+//
+//
+////                    if(String.valueOf(questionnaire.getDate_answered()).isEmpty())
+////                    {
+////
+////                        questionnaireBadge.setVisibility(View.VISIBLE);
+////                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+    }
 
     /** Navigates to QuestionnaireFragment with NavigationController with isNewQuestionnaire Args **/
     private void openQuestionnaireFragment(View view){
@@ -153,6 +253,8 @@ public class MainFragment extends Fragment {
 //        Intent intent = new Intent(getActivity(), NotificationActivity.class);
 //        startActivity(intent);
 //    }
+
+
 
 
 }

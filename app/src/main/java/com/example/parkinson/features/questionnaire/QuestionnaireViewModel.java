@@ -111,7 +111,7 @@ public class QuestionnaireViewModel extends ViewModel {
 //
 //                        }
 
-                    questionnaire = new Questionnaire(questionList,name,date_sent,System.currentTimeMillis());
+                    questionnaire = new Questionnaire(questionList,name,date_sent,System.currentTimeMillis() + "");
                     questionnaireDataEvent.setValue(questionnaire);
                     isLoading.postValue(false);
                 }

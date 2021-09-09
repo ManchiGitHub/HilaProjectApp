@@ -71,13 +71,16 @@ public class SingleQuestionMainAdapter extends MultiViewAdapter {
      * updating data for multipleChoiceAnswerSection from fragment
      **/
     public void updateSectionMultiChoiceAnswers(List<String> questionsList, List<String> answersList) {
-        if (!questionsList.isEmpty()) {
-            for (int i = 0; i < questionsList.size(); i++) {
-                String answer = questionsList.get(i);
-                Boolean isSelected = answersList.contains(answer);
-                multipleChoiceAnswerSection.add(new MultipleChoiceAnswer(answer, isSelected));
+
+        if(questionsList!=null) {
+            if (!questionsList.isEmpty()) {
+                for (int i = 0; i < questionsList.size(); i++) {
+                    String answer = questionsList.get(i);
+                    Boolean isSelected = answersList.contains(answer);
+                    multipleChoiceAnswerSection.add(new MultipleChoiceAnswer(answer, isSelected));
+                }
+                multipleChoiceAnswerSection.showSection();
             }
-            multipleChoiceAnswerSection.showSection();
         }
     }
 

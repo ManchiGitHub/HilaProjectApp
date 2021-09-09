@@ -118,6 +118,7 @@ public class QuestionnaireListFragment extends Fragment {
         });
         questionnaireListViewModel.myMedicationData.observe(getViewLifecycleOwner(), questionnaireList -> {
 
+
             adapter = new QuestionnaireListAdapter(questionnaireList);
 
             recyclerView.setAdapter(adapter);
@@ -131,6 +132,13 @@ public class QuestionnaireListFragment extends Fragment {
                 }
             });
         });
+    }
+
+    public static <T> void rearrange(List<T> items, T input){
+        int i = items.indexOf(input);
+        if(i>=0){
+            items.add(0, items.remove(i));
+        }
     }
 
 

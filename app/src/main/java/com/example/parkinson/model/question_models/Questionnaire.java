@@ -8,23 +8,26 @@ public class Questionnaire {
     private List<Question> questionList = new ArrayList<>();
     private String questionnaireName;
     private long date_sent;
-    private long date_answered;
+    private String date_answered;
+    private String isAnswered;
 
     public Questionnaire() {
     }
 
-    public Questionnaire(List<Question> questionList ,String name, long date_sent, long date_answered) {
+    public Questionnaire(List<Question> questionList, String name, long date_sent, String date_answered) {
         this.questionList = questionList;
         this.questionnaireName = name;
         this.date_sent = date_sent;
         this.date_answered = date_answered;
+        //this.date_answered = date_answered;
+        this.isAnswered = isAnswered;
     }
 
-    public Questionnaire(List<Question> questionList ,String name) {
+
+    public Questionnaire(List<Question> questionList, String name) {
         this.questionList = questionList;
         this.questionnaireName = name;
     }
-
 
 
     public List<Question> getQuestionList() {
@@ -52,11 +55,11 @@ public class Questionnaire {
         this.date_sent = date_sent;
     }
 
-    public long getDate_answered() {
+    public String getDate_answered() {
         return date_answered;
     }
 
-    public void setDate_answered(long date_answered) {
+    public void setDate_answered(String date_answered) {
         this.date_answered = date_answered;
     }
 }

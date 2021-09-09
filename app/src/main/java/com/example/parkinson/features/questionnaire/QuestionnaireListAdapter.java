@@ -1,5 +1,6 @@
 package com.example.parkinson.features.questionnaire;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainFragmentDirections;
 import com.example.parkinson.features.medic_case.MedicFile;
+import com.example.parkinson.model.question_models.Question;
 import com.example.parkinson.model.question_models.Questionnaire;
 
 import java.util.List;
@@ -46,10 +48,21 @@ public class QuestionnaireListAdapter extends RecyclerView.Adapter<Questionnaire
 
         holder.textView.setText(questionnaires.get(position).getQuestionnaireName());
 
+        if(questionnaires.get(position).getDate_answered() == null)
+        {
+            holder.textView.setTextColor(Color.GREEN);
+            //questionnaires.remove(questionnaires.get(position));
+            //questionnaires.add(0,questionnaires.get(position));
+            //rearrange(questionnaires,questionnaires.get(position));
+            //questionnaires.add(questionnaires.size()-1,questionnaires.get(position));
+        }
+
 
 
 
     }
+
+
 
     @Override
     public int getItemCount() {

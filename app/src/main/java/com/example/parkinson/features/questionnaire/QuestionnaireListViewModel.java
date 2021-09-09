@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -108,6 +109,13 @@ public class QuestionnaireListViewModel extends ViewModel {
 //        };
 //    }
 
+    public static <T> void rearrange(List<T> items, T input){
+        int i = items.indexOf(input);
+        if(i>=0){
+            items.add(0, items.remove(i));
+        }
+    }
+
 
     private ChildEventListener setQuestionnaireListener() {
         return new ChildEventListener() {
@@ -129,7 +137,25 @@ public class QuestionnaireListViewModel extends ViewModel {
                         //Log.d("GGGG",questionnaire.getQuestionnaireName());
 
                         //medicationHashMap.put(med.getId(), med);
+
+
                         list.add(questionnaire);
+
+//                    if(questionnaire.getDate_answered() == null)
+//                    {
+//                        list.remove(questionnaire);
+//                        list.add(0,questionnaire);
+//
+//                        for(int i = 0 ; i<list.size() ; i++)
+//                        {
+//                            userRepository.postQuestionnaire(list.get(i),i+"");
+//                        }
+//                    }
+
+
+
+
+
                         myMedicationData.setValue(list);
 //                    updateFilteredCategory();
                         isLoading.postValue(false);

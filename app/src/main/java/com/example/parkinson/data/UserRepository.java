@@ -104,6 +104,9 @@ final public class UserRepository {
     public void getQuestionnaireList(ChildEventListener listener) {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).addChildEventListener(listener);
     }
+    public void getQuestionnaireListValue(ValueEventListener listener) {
+        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).addValueEventListener(listener);
+    }
 
     public void postMedication(Medicine medicine) {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("needToUpdateMedicine").setValue(false);
