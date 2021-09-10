@@ -9,4 +9,26 @@
     <string name="settings">הגדרות</string>
     <string name="done">סיום</string>
     <string name="email">אימייל</string>
+    <string name="metrics">מדדים</string>
+    <string name="questionnaires">שאלונים</string>
+    <string name="Medical_file">תיק רפואי</string>
+    <string name="messages">הודעות</string>
+    <string name="welcome">ברוך הבא!</string>
+    <string name="questionnaire">שאלון רפואי</string>
+    <string name="finish">סיום</string>
+    <string name="Back">הקודם</string>
+    <string name="next">הבא</string>
+    <string name="my_metrics">המדדים שלי</string>
+    <string name="last_index">"מדידה אחרונה: "</string>
+    <string name="enter_result">הזן את תוצאות המדד</string>
+    <string name="save">שמירה</string>
+    <string name="last_measurements">מדידות אחרונות</string>
+    <string name="file_name">שם המסמך:</string>
+    <string name="remakrs">הערות:</string>
+    <string name="take_a_picture">צלם מסמך</string>
+    <string name="open_gallery">בחר מסמך מהגלריה</string>
+    <string name="enter_file_name">הכנס שם למסמך</string>
+    <string name="remarks">הכנס הערות (לא חובה)</string>
+    <string name="confirm">אישור</string>
+    <string name="enter_message">הכנס הודעה</string>
 </resources>

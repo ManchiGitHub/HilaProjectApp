@@ -42,7 +42,7 @@
                 android:paddingHorizontal="23dp"
                 android:paddingVertical="17dp"
                 android:paddingEnd="50dp"
-                android:text="תיק רפואי"
+                android:text="@string/Medical_file"
                 android:textSize="30sp" />
 
         </FrameLayout>

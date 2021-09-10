@@ -58,7 +58,7 @@ public class MyMetricsFragment extends Fragment {
     }
 
     private void initUi(View view) {
-        adapter = new MyMetricsMainAdapter(getMainAdapterListener());
+        adapter = new MyMetricsMainAdapter(getMainAdapterListener(), getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);

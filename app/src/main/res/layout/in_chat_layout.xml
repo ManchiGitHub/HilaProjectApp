@@ -88,7 +88,7 @@
             android:layout_toStartOf="@id/chat_send_btn"
             android:background="@color/transparent"
             android:textColorHint="@color/grey"
-            android:hint="הכנס הודעה"
+            android:hint="@string/enter_message"
             android:padding="5dp" />
 
         <ImageButton

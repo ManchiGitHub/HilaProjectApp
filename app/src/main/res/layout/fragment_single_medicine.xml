@@ -51,7 +51,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text= "הזן את תוצאות המדד"
+        android:text= "@string/enter_result"
         style="@style/SemiBold17Black"
         android:paddingTop="10dp"
         android:paddingHorizontal="23dp"
@@ -93,7 +93,7 @@
             android:gravity="center_horizontal|bottom"
             android:paddingHorizontal="40dp"
             android:paddingVertical="15dp"
-            android:text="שמירה" />
+            android:text="@string/save" />
 
     </androidx.cardview.widget.CardView>
 
@@ -188,7 +188,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text= "מדידות אחרונות"
+            android:text= "@string/last_measurements"
             style="@style/SemiBold17Black"
             android:paddingTop="10dp"
             android:id="@+id/last_metrics"

@@ -38,7 +38,7 @@
                 android:paddingHorizontal="23dp"
                 android:paddingVertical="17dp"
                 android:paddingEnd="50dp"
-                android:text="אפיון המחלה"
+                android:text="@string/questionnaire"
                 android:textSize="30sp" />
 
         </FrameLayout>
@@ -81,7 +81,7 @@
                 android:paddingEnd="45dp"
                 android:paddingStart="15dp"
                 android:paddingVertical="15dp"
-                android:text="הקודם" />
+                android:text="@string/Back" />
 
         </androidx.cardview.widget.CardView>
 
@@ -107,7 +107,7 @@
                 android:paddingVertical="15dp"
                 android:paddingStart="50dp"
                 android:paddingEnd="20dp"
-                android:text="הבא" />
+                android:text="@string/next" />
 
         </androidx.cardview.widget.CardView>
 
@@ -133,7 +133,7 @@
                 android:paddingVertical="15dp"
                 android:paddingStart="50dp"
                 android:paddingEnd="20dp"
-                android:text="סיום" />
+                android:text="@string/finish" />
 
         </androidx.cardview.widget.CardView>
 

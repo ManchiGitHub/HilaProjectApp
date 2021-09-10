@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="צלם מסמך"
+                android:text="@string/take_a_picture"
                 android:textSize="17sp" />
         </LinearLayout>
 
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="4"
-                android:text="בחר מסמך מהגלריה"
+                android:text="@string/open_gallery"
                 android:textSize="17sp" />
         </LinearLayout>
     </RelativeLayout>

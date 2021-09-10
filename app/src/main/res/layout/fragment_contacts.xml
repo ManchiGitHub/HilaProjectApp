@@ -41,7 +41,7 @@
                 android:paddingHorizontal="23dp"
                 android:paddingVertical="17dp"
                 android:paddingEnd="50dp"
-                android:text="הודעות"
+                android:text="@string/messages"
                 android:textSize="30sp" />
 
         </FrameLayout>

@@ -1,5 +1,6 @@
 package com.example.parkinson.features.metrics.binder;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,14 +13,17 @@ import mva2.adapter.ItemViewHolder;
 
 public class MetricBinderMetric extends ItemBinder<Medicine, MetricBinderMetric.ViewHolder> {
 
+    Context context;
+
     MedicineBinderMedicineListener listener;
 
     public interface MedicineBinderMedicineListener {
         void onMedicineClick(Medicine medicine);
     }
 
-    public MetricBinderMetric(MedicineBinderMedicineListener listener) {
+    public MetricBinderMetric(MedicineBinderMedicineListener listener, Context context) {
         this.listener = listener;
+        this.context = context;
     }
 
     @Override
@@ -35,7 +39,7 @@ public class MetricBinderMetric extends ItemBinder<Medicine, MetricBinderMetric.
     @Override
     public void bindViewHolder(ViewHolder holder, Medicine item) {
         holder.name.setText(item.getName());
-        holder.dosage.setText("מדידה אחרונה:  " + item.getValue() );
+        holder.dosage.setText(this.context.getString(R.string.last_index) + item.getValue());
         holder.itemView.setOnClickListener(v -> {
             listener.onMedicineClick(item);
         });
