@@ -54,7 +54,6 @@ public class QuestionBinderOpenAnswer extends
                 listener.onOpenAnswerChanged(answer);
             }
         });
-
     }
 
     static class viewHolder extends ItemViewHolder<OpenAnswer> {

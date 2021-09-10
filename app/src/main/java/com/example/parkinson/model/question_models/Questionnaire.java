@@ -1,5 +1,7 @@
 package com.example.parkinson.model.question_models;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,13 +10,14 @@ public class Questionnaire {
     private List<Question> questionList = new ArrayList<>();
     private String questionnaireName;
     private long date_sent;
-    private String date_answered;
+
+    private Long date_answered;
     private String isAnswered;
 
     public Questionnaire() {
     }
 
-    public Questionnaire(List<Question> questionList, String name, long date_sent, String date_answered) {
+    public Questionnaire(List<Question> questionList, String name, long date_sent, Long date_answered) {
         this.questionList = questionList;
         this.questionnaireName = name;
         this.date_sent = date_sent;
@@ -23,12 +26,24 @@ public class Questionnaire {
         this.isAnswered = isAnswered;
     }
 
-
     public Questionnaire(List<Question> questionList, String name) {
         this.questionList = questionList;
         this.questionnaireName = name;
     }
 
+    @Exclude
+    public boolean exists() {
+
+        return (questionList != null && !questionList.isEmpty());
+    }
+
+    public String getIsAnswered() {
+        return isAnswered;
+    }
+
+    public void setIsAnswered(String isAnswered) {
+        this.isAnswered = isAnswered;
+    }
 
     public List<Question> getQuestionList() {
         return questionList;
@@ -55,11 +70,11 @@ public class Questionnaire {
         this.date_sent = date_sent;
     }
 
-    public String getDate_answered() {
+    public Long getDate_answered() {
         return date_answered;
     }
 
-    public void setDate_answered(String date_answered) {
+    public void setDate_answered(long date_answered) {
         this.date_answered = date_answered;
     }
 }

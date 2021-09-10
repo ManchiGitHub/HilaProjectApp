@@ -31,6 +31,8 @@ import javax.inject.Singleton;
 @Singleton
 final public class UserRepository {
 
+    private static String TAG = "userrepository";
+
 //    private final FirebaseAuth auth;
 //    private final DatabaseReference db;
     private final DatabaseReference userTable;
@@ -84,13 +86,13 @@ final public class UserRepository {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
-                    Log.d("alih", "onComplete: success" + task.getResult());
+                    Log.d(TAG, "onComplete: success" + task.getResult());
                 }
                 else if (task.isCanceled()){
-                    Log.d("alih", "onComplete: cancelled" + task.getException().getMessage());
+                    Log.d(TAG, "onComplete: cancelled" + task.getException().getMessage());
                 }
                 else if (!task.isComplete()){
-                    Log.d("alih", "onComplete: not completed" + task.getException().getMessage());
+                    Log.d(TAG, "onComplete: not completed" + task.getException().getMessage());
                 }
             }
         });

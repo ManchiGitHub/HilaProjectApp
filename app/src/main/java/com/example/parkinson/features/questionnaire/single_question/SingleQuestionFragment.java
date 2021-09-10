@@ -17,6 +17,7 @@ import com.example.parkinson.features.main.MainActivity;
 import com.example.parkinson.features.questionnaire.QuestionnaireViewModel;
 import com.example.parkinson.features.questionnaire.single_question.SingleQuestionMainAdapter.SingleQuestionMainAdapterListener;
 import com.example.parkinson.model.enums.EChoiceType;
+import com.example.parkinson.model.enums.EQuestionType;
 import com.example.parkinson.model.question_models.MultipleChoiceQuestion;
 import com.example.parkinson.model.question_models.OpenQuestion;
 import com.example.parkinson.model.question_models.Question;
@@ -89,9 +90,9 @@ public class SingleQuestionFragment extends Fragment {
     private void handleQuestionData(Question question){
         if(question != null){
             this.question.setText(question.getTitle());
-            if (question instanceof OpenQuestion){
+            if (question.getType() ==  EQuestionType.OpenQuestion){
                 adapter.updateSectionOpenAnswer(((OpenQuestion) question).getAnswer());
-            } else if (question instanceof MultipleChoiceQuestion){
+            } else if (question.getType() == EQuestionType.MultipleChoiceQuestion){
                 if(((MultipleChoiceQuestion) question).getChoiceType() == EChoiceType.SingleChoice){
                     adapter.updateSectionSingleChoiceAnswers(((MultipleChoiceQuestion) question).getChoices(),((MultipleChoiceQuestion) question).getAnswers());
                 } else {
