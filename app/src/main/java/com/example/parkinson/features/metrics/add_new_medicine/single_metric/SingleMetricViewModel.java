@@ -48,8 +48,8 @@ public class SingleMetricViewModel extends ViewModel {
 //        medicineData.getValue().setDosage(dosage);
 //    }
 
-    public void saveMedicine() {
-        userRepository.postMedication(medicineData.getValue());
+    public void saveMedicine(Medicine med) {
+        userRepository.postMedication(med);
     }
 
     public void deleteMedicine() {

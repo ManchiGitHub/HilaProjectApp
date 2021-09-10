@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -108,13 +109,21 @@ public class MetricViewModel extends ViewModel {
     private ChildEventListener setMyMedicationListener() {
         return new ChildEventListener() {
 
+            final List<Medicine> list = new ArrayList<>();
+            final Map<String, String> myMap = new HashMap<>();
+
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.exists()) {
                     Medicine med = snapshot.getValue(Medicine.class);
-                    medicationHashMap.put(med.getId(), med);
-                    List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
-                    myMedicationData.setValue(list);
+//                    medicationHashMap.put(med.getId(), med);
+                    if (!myMap.containsKey(med.getName())){
+
+                        list.add(med);
+                        myMedicationData.setValue(list);
+                    }
+//                    List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+
 //                    updateFilteredCategory();
                     isLoading.postValue(false);
                 }
@@ -122,31 +131,34 @@ public class MetricViewModel extends ViewModel {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.exists()) {
-                    Medicine med = snapshot.getValue(Medicine.class);
-                    medicationHashMap.put(med.getId(), med);
-                }
-                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
-                myMedicationData.setValue(list);
-//                updateFilteredCategory();
+//                if (snapshot.exists()) {
+//                    Medicine med = snapshot.getValue(Medicine.class);
+//                    medicationHashMap.put(med.getId(), med);
+//                }
+
+//                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                myMedicationData.setValue(list);
+////                updateFilteredCategory();
+//                isLoading.postValue(false);
                 isLoading.postValue(false);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    Medicine med = snapshot.getValue(Medicine.class);
-                    medicationHashMap.remove(med.getId());
-                }
-                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
-                myMedicationData.setValue(list);
-//                updateFilteredCategory();
+//                if (snapshot.exists()) {
+//                    Medicine med = snapshot.getValue(Medicine.class);
+//                    medicationHashMap.remove(med.getId());
+//                }
+//                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                myMedicationData.setValue(list);
+////                updateFilteredCategory();
+//                isLoading.postValue(false);
                 isLoading.postValue(false);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                isLoading.postValue(false);
             }
 
             @Override

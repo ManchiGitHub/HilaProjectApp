@@ -93,7 +93,8 @@ public class SingleMetricFragment extends Fragment {
             valueList.add(singleMetric);
             this.medicine.setValueList(valueList);
             this.medicine.setValue(valueEt.getText().toString());
-            singleMetricViewModel.saveMedicine();
+            this.medicine.setId(medicine.getName());
+            singleMetricViewModel.saveMedicine(medicine);
             getActivity().onBackPressed();
         });
     }

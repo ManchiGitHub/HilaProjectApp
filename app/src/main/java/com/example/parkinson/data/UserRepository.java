@@ -112,7 +112,9 @@ final public class UserRepository {
 
     public void postMedication(Medicine medicine) {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.USER_DETAILS.name).child("needToUpdateMedicine").setValue(false);
-        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.INDICES_LIST.name).child(medicine.getId()).setValue(medicine);
+        String str = EDataSourceUser.INDICES_LIST.name;
+        String str1 = medicine.getId();
+        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.INDICES_LIST.name).child(medicine.getName()).setValue(medicine);
     }
 
     public void deleteMedication(Medicine medicine) {
