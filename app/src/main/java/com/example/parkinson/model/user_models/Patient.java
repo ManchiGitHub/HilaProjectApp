@@ -3,7 +3,7 @@ package com.example.parkinson.model.user_models;
 public class Patient {
     private String clinic;
     private String country;
-    private Long date_of_birth;
+    private String date_of_birth;
     private String doctor;
     private String email;
     private String first_name;
@@ -19,7 +19,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String clinic, String country, Long date_of_birth, String doctor, String email, String first_name, String gender, String last_name, String mobile_phone, String token, Boolean hasUnansweredQuestionnaire, Boolean needToUpdateMedicine) {
+    public Patient(String clinic, String country, String date_of_birth, String doctor, String email, String first_name, String gender, String last_name, String mobile_phone, String token, Boolean hasUnansweredQuestionnaire, Boolean needToUpdateMedicine) {
         this.clinic = clinic;
         this.country = country;
         this.date_of_birth = date_of_birth;
@@ -52,11 +52,11 @@ public class Patient {
         this.country = country;
     }
 
-    public Long getDate_of_birth() {
+    public String getDate_of_birth() {
         return date_of_birth;
     }
 
-    public void setDate_of_birth(Long date_of_birth) {
+    public void setDate_of_birth(String date_of_birth) {
         this.date_of_birth = date_of_birth;
     }
 

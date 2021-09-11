@@ -115,7 +115,7 @@ public class MainFragment extends Fragment {
 
     private void initObservers() {
         mainViewModel.patientEvent.observe(getViewLifecycleOwner(), patient -> {
-            //patient.getHasUnansweredQuestionnaire();
+
             //handlePatientData(patient);
         });
         mainViewModel.questionnaireEvent.observe(getViewLifecycleOwner(),questionnaire ->

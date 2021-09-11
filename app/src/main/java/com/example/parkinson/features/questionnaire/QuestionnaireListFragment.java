@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -21,6 +22,7 @@ import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
 import com.example.parkinson.features.main.MainViewModel;
 import com.example.parkinson.model.question_models.Questionnaire;
+import com.example.parkinson.model.user_models.Patient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,9 @@ public class QuestionnaireListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
+        mainViewModel.patientEvent.observe(getViewLifecycleOwner(), patient -> {
+            hasUnansweredQuestionnaire = patient.getHasUnansweredQuestionnaire();
+        });
 
         questionnaireListViewModel = new ViewModelProvider(this).get(QuestionnaireListViewModel.class);
 
@@ -111,13 +116,15 @@ public class QuestionnaireListFragment extends Fragment {
 
     }
 
+    boolean hasUnansweredQuestionnaire = false;
+
     private void initObservers() {
         questionnaireListViewModel.isLoading.observe(getViewLifecycleOwner(), isLoading -> {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.updateLoadingScreen(isLoading);
         });
-        questionnaireListViewModel.myMedicationData.observe(getViewLifecycleOwner(), questionnaireList -> {
 
+        questionnaireListViewModel.myMedicationData.observe(getViewLifecycleOwner(), questionnaireList -> {
 
             adapter = new QuestionnaireListAdapter(questionnaireList);
 
@@ -127,7 +134,8 @@ public class QuestionnaireListFragment extends Fragment {
                 public void onQuestionnaireClick(int position, View view) {
                     Bundle bundle = new Bundle();
                     bundle.putString("key", position + "");
-                    NavDirections action = QuestionnaireListFragmentDirections.actionQuestionnaireListFragmentToQuestionnaireFragment(mainViewModel.patientEvent.getValue().getHasUnansweredQuestionnaire(),position+"");
+                    NavDirections action =
+                            QuestionnaireListFragmentDirections.actionQuestionnaireListFragmentToQuestionnaireFragment(hasUnansweredQuestionnaire,position+"");
                     Navigation.findNavController(view).navigate(action);
                 }
             });
