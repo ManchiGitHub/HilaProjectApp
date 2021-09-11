@@ -29,6 +29,10 @@ public class DataRepository {
         dataTable.child(QUESTIONNAIRE_FOLLOW_UP.name).addListenerForSingleValueEvent(listener);
     }
 
+//    public void getFollowUpQuestionnaire(ValueEventListener listener){
+//        dataTable.child(QUESTIONNAIRE_FOLLOW_UP.name).addListenerForSingleValueEvent(listener);
+//    }
+
     /** Get data of all medicine list - for taken medicine report */
     public void getMedicineList(ValueEventListener listener){
         dataTable.child(INDICES_LIST.name).addListenerForSingleValueEvent(listener);

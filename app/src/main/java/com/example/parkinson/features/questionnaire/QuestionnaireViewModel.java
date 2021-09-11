@@ -47,7 +47,7 @@ public class QuestionnaireViewModel extends ViewModel {
      */
     public void init(Boolean isNewQuestionnaire, String index) {
         isLoading.postValue(true);
-        if (isNewQuestionnaire) {
+        if (false/*isNewQuestionnaire*/) {
             dataRepository.getFollowUpQuestionnaire(setQuestionnaireListener(index));
         }
         else {

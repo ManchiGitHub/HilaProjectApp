@@ -74,7 +74,4 @@ public class Questionnaire {
         return date_answered;
     }
 
-    public void setDate_answered(long date_answered) {
-        this.date_answered = date_answered;
-    }
 }
