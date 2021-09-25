@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -72,6 +73,11 @@ public class MyMedicCaseMainAdapter extends RecyclerView.Adapter<MyMedicCaseMain
 
     public MyMedicCaseMainAdapter(List<MedicFile> files) {
         this.files = files;
+    }
+
+    public void updateList(List<MedicFile> list)
+    {
+        this.files = list;
     }
 
     public class MyMedidCaseViewHolder extends RecyclerView.ViewHolder

@@ -4,7 +4,8 @@ package com.example.parkinson.data.enums;
 public enum EDataSourceData {
     QUESTIONNAIRE_NEW_PATIENT("questionnaire_new_patient"),
     QUESTIONNAIRE_FOLLOW_UP("questionnaire_follow_up"),
-    INDICES_LIST("indices_list");
+    INDICES_LIST("indices_list"),
+    FILES("files");
 
     public final String name;
     private EDataSourceData(String name) {

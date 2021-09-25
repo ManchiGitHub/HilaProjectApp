@@ -50,10 +50,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Text;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -61,6 +70,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -84,16 +94,22 @@ public class MyMedicCaseFragment extends Fragment {
     private RecyclerView recyclerView;
     private MyMedicCaseMainAdapter adapter;
 
+    //progress bar
+    ProgressBar progressBar;
+
     //camera and gallery
     private File mPhotoFile;
     private Uri fileUri;
     private Bitmap bitmap1, bitmap2;
+
 
     //Dialogs
     private AlertDialog alertDialog;
 
     private MedicFile medicFile = new MedicFile();
     private MedicFile medicFile1 = new MedicFile();
+
+    private List<MedicFile> filesList;
 
     public MyMedicCaseFragment() {
         super(R.layout.fragment_medic_case);
@@ -124,19 +140,27 @@ public class MyMedicCaseFragment extends Fragment {
         initObservers();
         initLaunchers();
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        //Collections.reverseOrder();
-        adapter = new MyMedicCaseMainAdapter(files);
-        recyclerView.setAdapter(adapter);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(layoutManager);
+//        //Collections.reverseOrder();
+//        adapter = new MyMedicCaseMainAdapter(files);
+//        recyclerView.setAdapter(adapter);
 
-        adapter.setListener(new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
-            @Override
-            public void onFileClicked(int position, View view) {
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(layoutManager);
+//        //Collections.reverseOrder();
+//        adapter = new MyMedicCaseMainAdapter(files);
+//        recyclerView.setAdapter(adapter);
 
-                loadImageDialog(files.get(position).getFilePath(),files.get(position).getTitle(),files.get(position).getNotes());
-            }
-        });
+        if(adapter !=null) {
+            adapter.setListener(new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
+                @Override
+                public void onFileClicked(int position, View view) {
+
+                    loadImageDialog(files.get(position).getFilePath(), files.get(position).getTitle(), files.get(position).getNotes());
+                }
+            });
+        }
 
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +181,7 @@ public class MyMedicCaseFragment extends Fragment {
         recyclerView = view.findViewById(R.id.medicCaseFragRecycler);
 //        addBtn = view.findViewById(R.id.medicCaseFragAddBtn);
         fabBtn = view.findViewById(R.id.medic_case_fab_btn);
+        progressBar = view.findViewById(R.id.app_bar_progress_bar);
 
     }
 
@@ -165,10 +190,34 @@ public class MyMedicCaseFragment extends Fragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.updateLoadingScreen(isLoading);
         });
-        medicCaseViewModel.myMedicationData.observe(getViewLifecycleOwner(), medicationCategories -> {
+
+        medicCaseViewModel.myMedicationData.observe(getViewLifecycleOwner(), files2 -> {
             //adapter.updateMedicineList(medicationCategories);
+            files = files2;
+           // adapter.updateList(files);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(layoutManager);
+            //Collections.reverseOrder();
+            adapter = new MyMedicCaseMainAdapter(files);
+            recyclerView.setAdapter(adapter);
+            //adapter.updateList(files2);
+            //adapter = new MyMedicCaseMainAdapter(files);
+            //recyclerView.setAdapter(adapter);
+
+
+
+            adapter.setListener(new MyMedicCaseMainAdapter.MyMedicCaseMainAdapterListener() {
+                @Override
+                public void onFileClicked(int position, View view) {
+
+                    loadImageDialog(files.get(position).getFilePath(),files.get(position).getTitle(),files.get(position).getNotes());
+                }
+            });
+
         });
     }
+
+
 
     private void buildSheetDialog() {
         final BottomSheetDialogFragment dialog = BottomSheetDialogFragment.newInstance();
@@ -234,13 +283,14 @@ public class MyMedicCaseFragment extends Fragment {
                             e.printStackTrace();
                         }
                         if (bitmap1 != null) {
-                            Calendar calendar = Calendar.getInstance(Locale.getDefault());
-                            String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
-                            medicFile1 = new MedicFile();
-                            medicFile1.setFilePath(fileUri.toString());
-                            medicFile1.setTimeStamp(chatTime);
+                            handleUpload(bitmap1);
+//                            Calendar calendar = Calendar.getInstance(Locale.getDefault());
+//                            String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
+//                            medicFile1 = new MedicFile();
+//                            medicFile1.setFilePath(fileUri.toString());
+//                            medicFile1.setTimeStamp(chatTime);
                             fileUri = null;
-                            createCustomDialog(medicFile1);
+                            //createCustomDialog(medicFile1);
                         }
                     }
                 });
@@ -263,17 +313,70 @@ public class MyMedicCaseFragment extends Fragment {
                             }
                             if (bitmap2 != null) {
                                 Calendar calendar = Calendar.getInstance(Locale.getDefault());
-                                String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
-                                medicFile = new MedicFile();
-                                medicFile.setFilePath(fileUri.toString());
-                                medicFile.setTimeStamp(chatTime);
+                                handleUpload(bitmap2);
+                                //String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
+                                //medicFile = new MedicFile();
+                                //medicFile.setFilePath(fileUri.toString());
+                                //medicFile.setTimeStamp(chatTime);
                                 fileUri = null;
-                                createCustomDialog(medicFile);
+                               // createCustomDialog(medicFile);
                             }
 
                         }
                     }
                 });
+    }
+
+    private void handleUpload(Bitmap bitmap) {
+
+            //profileProgressBar.setVisibility(View.VISIBLE);
+            //profileIv.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+            final StorageReference storage = FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getCurrentUser().getEmail()).child(System.currentTimeMillis() + ".jpeg");
+
+            storage.putBytes(baos.toByteArray())
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            getDownloadUrl(storage);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                        }
+                    });
+
+    }
+
+    private void getDownloadUrl(StorageReference storage) {
+        storage.getDownloadUrl()
+                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        medicFile = new MedicFile();
+                        createCustomDialog(medicFile);
+                            //setUserProfileUrl(uri);
+                        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+//                        medicFile.setFilePath(uri.toString());
+                        String chatTime = DateFormat.format("dd/MM/yyyy HH:mm", calendar).toString();
+                        medicFile.setTimeStamp(chatTime);
+
+                        medicFile.setFilePath(uri.toString());
+                        progressBar.setVisibility(View.INVISIBLE);
+                        //System.out.println(uri.toString());
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 
     private void pickImageFromGalleryConfirmPermission() {
@@ -331,7 +434,6 @@ public class MyMedicCaseFragment extends Fragment {
         }
     }
 
-    ProgressBar progressBar;
     ImageView imageView;
     ImageButton backBtn;
 
@@ -391,6 +493,22 @@ public class MyMedicCaseFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Patients").child(FirebaseAuth.getInstance().getUid()).child("files");
+        databaseReference.setValue(files);
     }
 
     @Override
@@ -437,12 +555,15 @@ public class MyMedicCaseFragment extends Fragment {
                 medicFiler.setNotes(notesTv.getText().toString());
                 if(!medicFiler.getTitle().isEmpty()) {
                     files.add(medicFiler);
+                    medicCaseViewModel.myMedicationData.postValue(files);
                     alertDialog.dismiss();
                 }
 
-                //adapter.notifyDataSetChanged();
+
             }
         });
     }
+
+
 
 }

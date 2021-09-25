@@ -53,19 +53,26 @@ public class QuestionBinderMultipleChoiceAnswer extends
     @Override
     public void bindViewHolder(final viewHolder holder, final MultipleChoiceAnswer answer) {
         holder.answer.setText(answer.getAnswer());
-        if (answer.getSelected()) {
+
+        if (answer.getSelected() && !selectedAnswers.contains(answer.getAnswer())) {
+
             selectedAnswers.add(answer.getAnswer());
         }
+
         updateHolder(holder,answer);
         holder.itemView.setOnClickListener(v -> {
                     if (answer.getSelected()) {
+
                         selectedAnswers.remove(answer.getAnswer());
                         answer.setSelected(false);
-                        listener.onChoiceChange(selectedAnswers);
+
                     } else {
+
                         answer.setSelected(true);
-                        listener.onChoiceChange(selectedAnswers);
+                        selectedAnswers.add(answer.getAnswer());
+
                     }
+                    listener.onChoiceChange(selectedAnswers);
                 }
         );
     }

@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel;
 import com.example.parkinson.data.DataRepository;
 import com.example.parkinson.data.UserRepository;
 import com.example.parkinson.model.general_models.Medicine;
+import com.example.parkinson.model.question_models.Questionnaire;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class MedicCaseViewModel extends ViewModel {
     private final DataRepository dataRepository;
 
 
-    public MutableLiveData<List<Medicine>> myMedicationData = new MutableLiveData<>();
+    public MutableLiveData<List<MedicFile>> myMedicationData = new MutableLiveData<>();
 //    public MutableLiveData<List<MedicineCategory>> categoryListData = new MutableLiveData<>();
 //    public MutableLiveData<MedicineCategory> filteredCategory = new MutableLiveData<>();
 
@@ -42,7 +44,7 @@ public class MedicCaseViewModel extends ViewModel {
 
     public void initMedicineData() {
         isLoading.postValue(true);
-        userRepository.getMedicationList(setMyMedicationListener());
+        userRepository.getFilesList(setMyMedicationListener());
         isLoading.postValue(false);
 //        dataRepository.getMedicineList(setMedicationCategoryListener());
     }
@@ -109,43 +111,109 @@ public class MedicCaseViewModel extends ViewModel {
 //    }
     //
 
+
+    private ValueEventListener setFilesListener()
+    {
+        List<MedicFile> list = new ArrayList<MedicFile>();
+
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+//                    Medicine med = snapshot.getValue(Medicine.class);
+//                    medicationHashMap.put(med.getId(), med);
+//                    List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                    myMedicationData.setValue(list);
+////                    updateFilteredCategory();
+//                    isLoading.postValue(false);
+
+                    //MedicFile medicFile = (MedicFile)snapshot.getValue(MedicFile.class);
+                    MedicFile medicFile = new MedicFile();
+                    medicFile.setFilePath((String)snapshot.child("filePath").getValue());
+                    medicFile.setNotes((String)snapshot.child("notes").getValue());
+                    medicFile.setTimeStamp((String)snapshot.child("timeStamp").getValue());
+                    medicFile.setTitle((String)snapshot.child("title").getValue());
+                    list.add(medicFile);
+                    myMedicationData.setValue(list);
+                    isLoading.postValue(false);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+    }
     private ChildEventListener setMyMedicationListener() {
         return new ChildEventListener() {
+
+            List<MedicFile> list = new ArrayList<MedicFile>();
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 if (snapshot.exists()) {
-                    Medicine med = snapshot.getValue(Medicine.class);
-                    medicationHashMap.put(med.getId(), med);
-                    List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                    Medicine med = snapshot.getValue(Medicine.class);
+//                    medicationHashMap.put(med.getId(), med);
+//                    List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                    myMedicationData.setValue(list);
+////                    updateFilteredCategory();
+//                    isLoading.postValue(false);
+
+                    MedicFile medicFile = snapshot.getValue(MedicFile.class);
+                    list.add(medicFile);
                     myMedicationData.setValue(list);
-//                    updateFilteredCategory();
                     isLoading.postValue(false);
                 }
+
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                MedicFile medicFile = new MedicFile();
                 if (snapshot.exists()) {
-                    Medicine med = snapshot.getValue(Medicine.class);
-                    medicationHashMap.put(med.getId(), med);
+                    medicFile = snapshot.getValue(MedicFile.class);
+                    //medicationHashMap.put(med.getId(), med);
+
                 }
-                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+                List<MedicFile> list = new ArrayList<MedicFile>();
+                list.add(medicFile);
                 myMedicationData.setValue(list);
 //                updateFilteredCategory();
                 isLoading.postValue(false);
+
+
+                if (snapshot.exists()) {
+//                    Medicine med = snapshot.getValue(Medicine.class);
+//                    medicationHashMap.put(med.getId(), med);
+
+//                    MedicFile medicFile = snapshot.getValue(MedicFile.class);
+//                    list.add(medicFile);
+//                    myMedicationData.setValue(list);
+//                    isLoading.postValue(false);
+                }
+//                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                myMedicationData.setValue(list);
+////                updateFilteredCategory();
+//                isLoading.postValue(false);
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    Medicine med = snapshot.getValue(Medicine.class);
-                    medicationHashMap.remove(med.getId());
+//                    Medicine med = snapshot.getValue(Medicine.class);
+//                    medicationHashMap.remove(med.getId());
+
+//                    MedicFile medicFile = snapshot.getValue(MedicFile.class);
+//                    myMedicationData.setValue(list);
+//                    isLoading.postValue(false);
                 }
-                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
-                myMedicationData.setValue(list);
-//                updateFilteredCategory();
-                isLoading.postValue(false);
+//                List<Medicine> list = new ArrayList<Medicine>(medicationHashMap.values());
+//                myMedicationData.setValue(list);
+////                updateFilteredCategory();
+//                isLoading.postValue(false);
             }
 
             @Override

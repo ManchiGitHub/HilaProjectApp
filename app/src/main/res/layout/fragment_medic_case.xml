@@ -1,81 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_layout"
     android:background="@color/light_blue"
     android:orientation="vertical"
     android:weightSum="1">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        app:cardElevation="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/relative"
+        android:layout_height="match_parent">
 
-        <FrameLayout
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:elevation="8dp"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageButton
-                android:id="@+id/medicCaseFragExitBtn"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:padding="23dp"
-                android:src="@drawable/ic_close_round" />
+                android:background="@color/colorPrimary">
 
-            <TextView
-                android:id="@+id/medicCaseFragTitle"
-                style="@style/Title25White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="10dp"
-                android:fontFamily="@font/assistant_extrabold"
-                android:gravity="start"
-                android:paddingHorizontal="23dp"
-                android:paddingVertical="17dp"
-                android:paddingEnd="50dp"
-                android:text="@string/Medical_file"
-                android:textSize="30sp" />
+                <ImageButton
+                    android:id="@+id/medicCaseFragExitBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="23dp"
+                    android:src="@drawable/ic_close_round" />
 
-        </FrameLayout>
+                <TextView
+                    android:id="@+id/medicCaseFragTitle"
+                    style="@style/Title25White"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/assistant_extrabold"
+                    android:gravity="start"
+                    android:paddingHorizontal="23dp"
+                    android:paddingVertical="17dp"
+                    android:paddingEnd="50dp"
+                    android:text="@string/Medical_file"
+                    android:textSize="30sp" />
 
-    </androidx.cardview.widget.CardView>
+            </FrameLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/medicCaseFragRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingHorizontal="23dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+        </androidx.cardview.widget.CardView>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/medic_case_fab_btn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_gravity="end"
-        android:layout_margin="15dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_add"
-        app:tint="@color/white"
-        app:borderWidth="0dp"
-        app:fabCustomSize="80dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="40dp"
-        app:rippleColor="@color/light_blue" />
+        <ProgressBar
+            android:id="@+id/app_bar_progress_bar"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/colorPrimary"
+            android:translationZ="25dp"
+            android:visibility="gone"
+            android:layout_centerInParent="true" />
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/medicCaseFragRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_above="@id/medic_case_fab_btn"
+            android:paddingHorizontal="23dp"
+            android:layout_below="@+id/cardView2" />
+
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/medic_case_fab_btn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="end"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_add"
+            app:tint="@color/white"
+            app:borderWidth="0dp"
+            app:fabCustomSize="80dp"
+            android:layout_alignParentBottom="true"
+            app:maxImageSize="40dp"
+            app:rippleColor="@color/light_blue" />
+
+
+    </RelativeLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

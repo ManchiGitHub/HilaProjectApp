@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class MedicFile implements Serializable {
 
-    private String filePath;
+    private String url;
     private String timeStamp;
     private String title;
     private String notes;
 
     public MedicFile(String filePath, String timeStamp) {
-        this.filePath = filePath;
+        this.url = filePath;
         this.timeStamp = timeStamp;
     }
 
@@ -18,11 +18,11 @@ public class MedicFile implements Serializable {
     }
 
     public String getFilePath() {
-        return filePath;
+        return url;
     }
 
     public void setFilePath(String filePath) {
-        this.filePath = filePath;
+        this.url = filePath;
     }
 
     public String getTimeStamp() {

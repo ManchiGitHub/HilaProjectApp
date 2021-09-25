@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        readFiles();
+        //readFiles();
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        saveFiles();
+        //saveFiles();
 
         // for testing
     }

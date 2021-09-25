@@ -66,7 +66,7 @@ public class Questionnaire {
         return date_sent;
     }
 
-    public void setDate_sent(long date_sent) {
+    public void setDate_sent(Long date_sent) {
         this.date_sent = date_sent;
     }
 

@@ -103,6 +103,10 @@ final public class UserRepository {
         userTable.child(firebaseUser.getUid()).child(EDataSourceData.INDICES_LIST.name).addChildEventListener(listener);
     }
 
+    public void getFilesList(ChildEventListener listener) {
+        userTable.child(firebaseUser.getUid()).child(EDataSourceData.FILES.name).addChildEventListener(listener);
+    }
+
     public void getQuestionnaireList(ChildEventListener listener) {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.QUESTIONNAIRE.name).addChildEventListener(listener);
     }
