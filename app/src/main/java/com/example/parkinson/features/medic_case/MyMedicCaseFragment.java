@@ -33,10 +33,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +53,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
+import com.example.parkinson.features.main.MainFragmentDirections;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -73,8 +77,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -496,22 +502,26 @@ public class MyMedicCaseFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+
+
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
 
-    }
 
+    }
 
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Patients").child(FirebaseAuth.getInstance().getUid()).child("files");
-        databaseReference.setValue(files);
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Patients").child(FirebaseAuth.getInstance().getUid()).child("files");
+//        databaseReference.setValue(files);
     }
+
 
     @Override
     public void onResume() {
@@ -557,14 +567,26 @@ public class MyMedicCaseFragment extends Fragment {
                 medicFiler.setNotes(notesTv.getText().toString());
                 if(!medicFiler.getTitle().isEmpty()) {
                     files.add(medicFiler);
-                    medicCaseViewModel.myMedicationData.postValue(files);
+                    //medicCaseViewModel.myMedicationData.postValue(files);
                     alertDialog.dismiss();
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Patients").child(FirebaseAuth.getInstance().getUid()).child("files");
+                    databaseReference.setValue(files);
+                    NavDirections action = MyMedicCaseFragmentDirections.actionMyMedicCaseFragmentToMyMedicCaseFragment();
+                    Navigation.findNavController(getView()).navigate(action);
+                    //getActivity().onBackPressed();
+
                 }
+
+
+
 
 
             }
         });
     }
+
+
+
 
 
 

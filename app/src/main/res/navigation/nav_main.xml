@@ -101,6 +101,12 @@
         android:label="MyMedicCaseFragment"
         tools:layout="@layout/fragment_medic_case">
 
+        <action
+            android:id="@+id/action_MyMedicCaseFragment_to_MyMedicCaseFragment"
+            app:destination="@id/MyMedicCaseFragment"
+            app:popExitAnim="@anim/slide_left_exit"
+            app:launchSingleTop="true"/>
+
     </fragment>
 
     <fragment

@@ -126,18 +126,23 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_mainFragment_to_questionnaireListFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                           </map>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="myMedicinesFragment">
+                  <entry key="myMetricsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="256" />
-                            <option name="y" value="368" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -177,6 +182,15 @@
                             <option name="x" value="248" />
                             <option name="y" value="-154" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_questionnaireListFragment_to_questionnaireFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
