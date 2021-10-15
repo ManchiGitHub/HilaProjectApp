@@ -32,11 +32,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class SingleQuestionFragment extends Fragment {
 
     private QuestionnaireViewModel questionnaireViewModel;
-
     int position;
-
     SingleQuestionMainAdapter adapter;
-
     TextView question;
     RecyclerView recyclerView;
 

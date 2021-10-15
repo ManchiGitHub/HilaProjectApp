@@ -37,7 +37,7 @@ public class QuestionnaireListFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private QuestionnaireListAdapter adapter;
-    private List<Questionnaire> temp = new ArrayList<Questionnaire>();
+    final private List<Questionnaire> temp = new ArrayList<Questionnaire>();
     MainViewModel mainViewModel;
 
 
@@ -142,12 +142,12 @@ public class QuestionnaireListFragment extends Fragment {
         });
     }
 
-    public static <T> void rearrange(List<T> items, T input){
-        int i = items.indexOf(input);
-        if(i>=0){
-            items.add(0, items.remove(i));
-        }
-    }
+//    public static <T> void rearrange(List<T> items, T input){
+//        int i = items.indexOf(input);
+//        if(i>=0){
+//            items.add(0, items.remove(i));
+//        }
+//    }
 
 
 

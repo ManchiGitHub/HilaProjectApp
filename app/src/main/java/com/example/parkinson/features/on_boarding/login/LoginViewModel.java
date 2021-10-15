@@ -25,7 +25,7 @@ public class LoginViewModel extends ViewModel implements UserRepository.InitUser
     String password = "";
     MutableLiveData<ErrorEvent> errorEvent;
     MutableLiveData<Boolean> loginEvent;
-    MutableLiveData<NextButtonState> nextButtonState;
+//    MutableLiveData<NextButtonState> nextButtonState;
 
     enum ErrorEvent {
         UN_VALID_EMAIL,
@@ -33,10 +33,10 @@ public class LoginViewModel extends ViewModel implements UserRepository.InitUser
         LOGIN_FAIL
     }
 
-    enum NextButtonState {
-        ENABLE,
-        DISABLE
-    }
+//    enum NextButtonState {
+//        ENABLE,
+//        DISABLE
+//    }
 
     // @Inject tells Dagger how to create instances of MainViewModel
     @Inject
@@ -44,27 +44,27 @@ public class LoginViewModel extends ViewModel implements UserRepository.InitUser
         this.userRepository = userRepository;
         errorEvent = new MutableLiveData<>();
         loginEvent = new MutableLiveData<>();
-        nextButtonState = new MutableLiveData<>();
+        //nextButtonState = new MutableLiveData<>();
         this.messagingManager = messagingManager;
     }
 
     public void setEmail(String email) {
         this.email = email;
-        validateNextButton();
+        //validateNextButton();
     }
 
     public void setPassword(String password) {
         this.password = password;
-        validateNextButton();
+        //validateNextButton();
     }
 
-    public void validateNextButton(){
-        if(!email.isEmpty() && !password.isEmpty()){
-            nextButtonState.postValue(NextButtonState.ENABLE);
-        } else {
-            nextButtonState.postValue(NextButtonState.DISABLE);
-        }
-    }
+//    public void validateNextButton(){
+//        if(!email.isEmpty() && !password.isEmpty()){
+//            nextButtonState.postValue(NextButtonState.ENABLE);
+//        } else {
+//            nextButtonState.postValue(NextButtonState.DISABLE);
+//        }
+//    }
 
     public void onLoginClick() {
         if (email.isEmpty()) {

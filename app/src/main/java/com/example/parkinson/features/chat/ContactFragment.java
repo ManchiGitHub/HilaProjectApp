@@ -23,7 +23,6 @@ public class ContactFragment extends Fragment {
         void onChatClicked(String userID);
     }
 
-    private OnChatClickListener listener;
     private RecyclerView recyclerView;
     private ChatRoomsAdapter chatRoomsAdapter;
 

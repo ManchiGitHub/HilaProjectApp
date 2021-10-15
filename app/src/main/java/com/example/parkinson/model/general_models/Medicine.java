@@ -10,7 +10,6 @@ import java.util.List;
 public class Medicine implements Parcelable {
     private String id;
 //    private String categoryId;
-
     private String name;
     private String value;
     List<SingleMetric> valueList;
@@ -83,34 +82,6 @@ public class Medicine implements Parcelable {
         this.value = value;
     }
 
-//    public List<Time> getHoursArr() {
-//        return hoursArr;
-//    }
-//
-//    public void setHoursArr(List<Time> hoursArr) {
-//        this.hoursArr = hoursArr;
-//    }
-
-//    public String dosageString() {
-//        if (value == 0.25) {
-//            return "רבע כדור";
-//        } else if (value == 0.50) {
-//            return "חצי כדור";
-//        } else if (value == 0.75) {
-//            return "שלושת רבעי כדור";
-//        } else if (value == 1.00) {
-//            return "כדור בודד";
-//        } else if (value == 1.25) {
-//            return "כדור ורבע";
-//        } else if (value == 1.50) {
-//            return "כדור וחצי";
-//        } else if (value == 1.75) {
-//            return "כדור ושלושת רבעי";
-//        } else if (value == 2.00) {
-//            return "שני כדורים";
-//        }
-//        return "";
-//    }
 
 
 

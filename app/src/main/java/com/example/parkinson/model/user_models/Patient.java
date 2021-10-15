@@ -11,9 +11,7 @@ public class Patient {
     private String last_name;
     private String mobile_phone;
     private String token;
-
     private Boolean hasUnansweredQuestionnaire;
-
     private Boolean needToUpdateMedicine;
 
     public Patient() {

@@ -8,7 +8,6 @@ import androidx.navigation.NavDirections;
 
 import com.example.parkinson.data.DataRepository;
 import com.example.parkinson.data.UserRepository;
-import com.example.parkinson.model.general_models.Report;
 import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;
 import com.google.firebase.database.ChildEventListener;
@@ -33,9 +32,9 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<ArrayList<Questionnaire>> questionnaireEvent;
     MutableLiveData<Boolean> isLoading;
 
-    List<Report> reports = new ArrayList<>();
-    MutableLiveData<List<String>> messagesData = new MutableLiveData<>();
-    MutableLiveData<List<Report>> reportsData = new MutableLiveData<>();
+//    List<Report> reports = new ArrayList<>();
+//    MutableLiveData<List<String>> messagesData = new MutableLiveData<>();
+//    MutableLiveData<List<Report>> reportsData = new MutableLiveData<>();
 
     /**
      * For navigation between fragments in main activity using NavigationComponent
@@ -70,27 +69,27 @@ public class MainViewModel extends ViewModel {
      **/
     public void initData() {
         isLoading.setValue(false);
-        handleUserDetails(userRepository.getPatientDetails());
+        //handleUserDetails(userRepository.getPatientDetails());
         //userRepository.getReportsList(setReportsListener());
         userRepository.getQuestionnaireListValue(setQuestionnaireListenerValue());
     }
-
-    private void handleUserDetails(Patient patientDetails) {
-        if (patientDetails!=null){
-            patientEvent.postValue(patientDetails);
-            List<String> messages = new ArrayList<>();
-            if (patientDetails.getHasUnansweredQuestionnaire()) {
-                messages.add("קיים שאלון חדש המחכה למענה");
-            }
-            if (patientDetails.getNeedToUpdateMedicine()) {
-                messages.add("יש למלא רשימת תרופות");
-            }
-            if (!patientDetails.getNeedToUpdateMedicine() && !patientDetails.getHasUnansweredQuestionnaire()) {
-                messages.add("אין הודעות חדשות");
-            }
-            messagesData.postValue(messages);
-        }
-    }
+//
+//    private void handleUserDetails(Patient patientDetails) {
+//        if (patientDetails!=null){
+//            patientEvent.postValue(patientDetails);
+//            List<String> messages = new ArrayList<>();
+//            if (patientDetails.getHasUnansweredQuestionnaire()) {
+//                messages.add("קיים שאלון חדש המחכה למענה");
+//            }
+//            if (patientDetails.getNeedToUpdateMedicine()) {
+//                messages.add("יש למלא רשימת תרופות");
+//            }
+//            if (!patientDetails.getNeedToUpdateMedicine() && !patientDetails.getHasUnansweredQuestionnaire()) {
+//                messages.add("אין הודעות חדשות");
+//            }
+//            messagesData.postValue(messages);
+//        }
+//    }
 
 
 //    private ChildEventListener setReportsListener() {
@@ -131,11 +130,11 @@ public class MainViewModel extends ViewModel {
     /**
      * Logging out of current user and back to on boarding activity
      **/
-    public void logOut() {
-        userRepository.logout();
-        openActivityEvent.postValue(OpenActivityEvent.OPEN_ON_BOARDING_ACTIVITY);
-
-    }
+//    public void logOut() {
+//        userRepository.logout();
+//        openActivityEvent.postValue(OpenActivityEvent.OPEN_ON_BOARDING_ACTIVITY);
+//
+//    }
 
     private ValueEventListener setQuestionnaireListenerValue()
     {

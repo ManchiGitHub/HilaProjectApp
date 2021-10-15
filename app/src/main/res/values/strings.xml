@@ -30,4 +30,6 @@
     <string name="remarks">הכנס הערות</string>
     <string name="confirm">אישור</string>
     <string name="enter_message">הכנס הודעה</string>
+    <string name="decline">סירוב ויציאה</string>
+    <string name="terms_of_use">terms_of_use</string>
 </resources>

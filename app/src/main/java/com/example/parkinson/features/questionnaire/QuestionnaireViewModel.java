@@ -30,7 +30,6 @@ public class QuestionnaireViewModel extends ViewModel {
     private final DataRepository dataRepository;
     MutableLiveData<Questionnaire> questionnaireDataEvent = new MutableLiveData<>();
     MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    String key;
     private Questionnaire _questionnaire;
 
     // @Inject tells Dagger how to create instances of MainViewModel

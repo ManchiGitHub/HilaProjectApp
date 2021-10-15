@@ -17,7 +17,6 @@ public class SplashViewModel extends ViewModel implements UserRepository.InitUse
         OPEN_ON_BOARDING_ACTIVITY,
         OPEN_MAIN_ACTIVITY
     }
-
     MutableLiveData<NavigationEvent> navigationEvent;
 
     // @Inject tells Dagger how to create instances of MainViewModel

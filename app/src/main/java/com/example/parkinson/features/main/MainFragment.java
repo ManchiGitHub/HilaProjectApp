@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.parkinson.R;
 import com.example.parkinson.data.UserRepository;
 import com.example.parkinson.data.enums.EDataSourceUser;
-import com.example.parkinson.features.main.adapters.MessagesListAdapter;
 import com.example.parkinson.model.question_models.Question;
 import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;

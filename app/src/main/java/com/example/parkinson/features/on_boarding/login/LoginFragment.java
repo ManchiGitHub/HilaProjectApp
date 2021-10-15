@@ -1,11 +1,16 @@
 package com.example.parkinson.features.on_boarding.login;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +25,10 @@ import com.example.ParkinsonApplication;
 import com.example.parkinson.R;
 import com.example.parkinson.features.main.MainActivity;
 import com.example.parkinson.features.main.MainViewModel;
+import com.example.parkinson.features.medic_case.MedicFile;
 import com.example.parkinson.features.on_boarding.OnBoardingActivity;
 import com.example.parkinson.features.on_boarding.OnBoardingViewModel;
 import com.example.parkinson.model.enums.EClinics;
-import com.example.parkinson.model.general_models.Time;
 import com.example.parkinson.model.user_models.Patient;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -33,6 +38,8 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
+
+import static com.example.parkinson.features.main.MainActivity.files;
 
 @AndroidEntryPoint
 public class LoginFragment extends Fragment {
@@ -62,8 +69,17 @@ public class LoginFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         onBoardingViewModel = new ViewModelProvider(requireActivity()).get(OnBoardingViewModel.class);
 
+
+
         initUi(view);
         initObservers();
+
+        SharedPreferences pref = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        boolean isAnswered = pref.getBoolean("isAnswered", false);
+        if(!isAnswered)
+        {
+            createCustomDialog();
+        }
     }
 
     private void initUi(View view) {
@@ -102,16 +118,16 @@ public class LoginFragment extends Fragment {
     }
 
     private void initObservers() {
-        loginViewModel.nextButtonState.observe(getViewLifecycleOwner(), new Observer<LoginViewModel.NextButtonState>() {
-            @Override
-            public void onChanged(LoginViewModel.NextButtonState nextButtonState) {
-                switch (nextButtonState) {
-                    case ENABLE:
-
-                    case DISABLE:
-                }
-            }
-        });
+//        loginViewModel.nextButtonState.observe(getViewLifecycleOwner(), new Observer<LoginViewModel.NextButtonState>() {
+//            @Override
+//            public void onChanged(LoginViewModel.NextButtonState nextButtonState) {
+//                switch (nextButtonState) {
+//                    case ENABLE:
+//
+//                    case DISABLE:
+//                }
+//            }
+//        });
         loginViewModel.loginEvent.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean successful) {
@@ -134,6 +150,52 @@ public class LoginFragment extends Fragment {
                         Toast.makeText(requireContext(),"Un valid password",Toast.LENGTH_SHORT).show();
                         break;
                 }
+            }
+        });
+    }
+
+    private void createCustomDialog() {
+
+        final AlertDialog alertDialog;
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_start_layout, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setCancelable(false);
+        alertDialog = builder.setView(dialogView).show();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        SharedPreferences pref = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+
+
+
+        //ImageView iconIv = dialogView.findViewById(R.id.profile_dialog_icon);
+        final Button okBtn = dialogView.findViewById(R.id.profile_dialog_btn);
+        final Button cancelBtn = dialogView.findViewById(R.id.profile_dialog_btn1);
+
+
+
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                editor.putBoolean("isAnswered", true);
+                editor.apply();
+
+                alertDialog.dismiss();
+
+
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editor.putBoolean("isAnswered", false);
+                editor.apply();
+                alertDialog.dismiss();
+                getActivity().finish();
             }
         });
     }

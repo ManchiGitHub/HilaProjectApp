@@ -25,21 +25,17 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class MedicCaseViewModel extends ViewModel {
     private final UserRepository userRepository;
-    private final DataRepository dataRepository;
-
-
     public MutableLiveData<List<MedicFile>> myMedicationData = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 //    public MutableLiveData<List<MedicineCategory>> categoryListData = new MutableLiveData<>();
 //    public MutableLiveData<MedicineCategory> filteredCategory = new MutableLiveData<>();
 
-    MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    HashMap<String, Medicine> medicationHashMap = new HashMap<>();
+
 
     // @Inject tells Dagger how to create instances of MainViewModel
     @Inject
     public MedicCaseViewModel(UserRepository userRepository, DataRepository dataRepository) {
         this.userRepository = userRepository;
-        this.dataRepository = dataRepository;
     }
 
     public void initMedicineData() {

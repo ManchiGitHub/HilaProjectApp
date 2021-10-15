@@ -222,6 +222,8 @@ public class MyMedicCaseFragment extends Fragment {
     private void buildSheetDialog() {
         final BottomSheetDialogFragment dialog = BottomSheetDialogFragment.newInstance();
 
+
+
         dialog.setListener(new BottomSheetDialogFragment.BottomSheetInterfaceListener() {
             @Override
             public void OnSelectPic() {

@@ -22,21 +22,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class MetricViewModel extends ViewModel {
     private final UserRepository userRepository;
-    private final DataRepository dataRepository;
-
-
     public MutableLiveData<List<Medicine>> myMedicationData = new MutableLiveData<>();
-//    public MutableLiveData<List<MedicineCategory>> categoryListData = new MutableLiveData<>();
-//    public MutableLiveData<MedicineCategory> filteredCategory = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
-    MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
-    HashMap<String, Medicine> medicationHashMap = new HashMap<>();
 
     // @Inject tells Dagger how to create instances of MainViewModel
     @Inject
-    public MetricViewModel(UserRepository userRepository, DataRepository dataRepository) {
+    public MetricViewModel(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.dataRepository = dataRepository;
     }
 
     public void initMedicineData() {

@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import com.example.parkinson.data.enums.EDataSourceData;
 import com.example.parkinson.data.enums.EDataSourceUser;
 import com.example.parkinson.model.general_models.Medicine;
-import com.example.parkinson.model.general_models.MedicineReport;
-import com.example.parkinson.model.general_models.Report;
 import com.example.parkinson.model.question_models.Questionnaire;
 import com.example.parkinson.model.user_models.Patient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +35,6 @@ final public class UserRepository {
 //    private final DatabaseReference db;
     private final DatabaseReference userTable;
     private FirebaseUser firebaseUser;
-
     private Patient currentPatientDetails;
 
     // TODO: 23/7/2021 it's not a table...
@@ -125,13 +122,13 @@ final public class UserRepository {
         userTable.child(firebaseUser.getUid()).child(EDataSourceUser.INDICES_LIST.name).child(medicine.getId()).setValue(null);
     }
 
-    public void postReport(Report report) {
-        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.REPORTS.name).push().setValue(report);
-    }
-
-    public void getReportsList(ChildEventListener listener) {
-        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.REPORTS.name).addChildEventListener(listener);
-    }
+//    public void postReport(Report report) {
+//        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.REPORTS.name).push().setValue(report);
+//    }
+//
+//    public void getReportsList(ChildEventListener listener) {
+//        userTable.child(firebaseUser.getUid()).child(EDataSourceUser.REPORTS.name).addChildEventListener(listener);
+//    }
 
 
     /**
@@ -147,9 +144,9 @@ final public class UserRepository {
     /**
      * Logout of firebase
      **/
-    public void logout() {
-        FirebaseAuth.getInstance().signOut();
-    }
+//    public void logout() {
+//        FirebaseAuth.getInstance().signOut();
+//    }
 
     /**
      * Get current stored user
@@ -169,9 +166,9 @@ final public class UserRepository {
         userTable.child(firebaseUser.getUid()).child(EDataSourceData.INDICES_LIST.name).addValueEventListener(listener);
     }
 
-    public void pushMedicineReport(List<MedicineReport> reportList, ValueEventListener listener) {
-        userTable.child(firebaseUser.getUid()).child("Medicine Reports").addValueEventListener(listener);
-    }
+//    public void pushMedicineReport(List<MedicineReport> reportList, ValueEventListener listener) {
+//        userTable.child(firebaseUser.getUid()).child("Medicine Reports").addValueEventListener(listener);
+//    }
 
     InitUserListener initUserListener;
     public interface InitUserListener{
